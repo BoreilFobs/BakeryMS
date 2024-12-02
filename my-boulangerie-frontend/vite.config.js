@@ -5,7 +5,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@mui/styled-engine": "@mui/styled-engine-sc",
+      "@mui/material": "@mui/material/esm",
+      "@mui/icons-material": "@mui/icons-material/esm",
     },
   },
 });

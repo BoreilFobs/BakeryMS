@@ -1,9 +1,9 @@
 import React from "react";
-import Testcode from "./components/Testcode";
+import Blank from "./components/Blank";
 function App() {
   return (
-    <div>
-      <Testcode />
+    <div className="bglight min-vh-100 min-vw-100 overflow-hidden">
+      <Blank />
     </div>
   );
 }
