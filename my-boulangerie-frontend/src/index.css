@@ -42,15 +42,7 @@ body {
   color: var(--dark);
 }
 .hover-light:hover {
-  background: linear-gradient(
-    90deg,
-    var(--light),
-    var(--light),
-    var(--light),
-    var(--light),
-    rgba(245, 245, 245, 0.788)
-  );
-  color: var(--dark);
+  color: var(--brown-3);
 }
 .brown3 {
   color: var(--brown-2);
@@ -94,3 +86,26 @@ body {
 }
 
 /* ------------------------styling components======================== */
+
+/* -------------sidebar------------------------- */
+.sidebar {
+  width: 20vw;
+}
+.sidebar .link {
+  text-decoration: none;
+  transition: 0.2s;
+  width: 100%;
+}
+.sidebar .link .mrk {
+  position: absolute;
+  right: 15px;
+}
+.colapse {
+  width: 82px;
+}
+.fa-bars {
+  position: relative;
+  left: 10px;
+}
+
+/* -------------------------------styling the main component------------------------------------ */

@@ -1,6 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import { Link, BrowserRouter } from "react-router-dom";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 
 export default function Navbar() {
   return (
@@ -13,7 +13,7 @@ export default function Navbar() {
             placeholder="Search the dashboard"
           />
           <i
-            class="fa fa-search fs-4 fw-bold dark pointer"
+            className="fa fa-search fs-4 fw-bold dark pointer"
             aria-hidden="true"
             onClick={() => {
               alert("clicked");
@@ -22,29 +22,35 @@ export default function Navbar() {
         </div>
         <div className="icons d-flex align-items-center justify-content-between gap-4 brown1">
           <BrowserRouter>
-            <Link to="/" className="brown2">
+            <Link to="/">
               {" "}
               <i
-                class="fas fa-home fs-5 pointer hover-dark transition-1"
+                className="fas fa-home fs-5 pointer hover-dark brown1 transition-1"
                 title="dashboard"
               ></i>
             </Link>
+            <Link to="/messages">
+              <i
+                className="fa fa-bell fs-5 pointer hover-dark brown1 transition-1"
+                aria-hidden="true"
+              ></i>
+            </Link>
+            <Link to="/calendar">
+              {" "}
+              <i
+                className="fa fa-calendar fs-5 pointer hover-dark brown1 transition-1"
+                aria-hidden="true"
+                title="calender"
+              ></i>
+            </Link>
+            <Link to="/settings">
+              <i
+                className="fa fa-gear fs-3 pointer hover-dark brown1 transition-1"
+                aria-hidden="true"
+                title="Settings"
+              ></i>
+            </Link>
           </BrowserRouter>
-          <i
-            class="fa fa-bell fs-5 pointer hover-dark transition-1"
-            aria-hidden="true"
-          ></i>
-          <i
-            class="fa fa-calendar fs-5 pointer hover-dark transition-1"
-            aria-hidden="true"
-            title="calender"
-          ></i>
-          <i
-            class="fa fa-gear fs-3 pointer hover-dark transition-1"
-            aria-hidden="true"
-            title="Settings"
-            onMousehover={Set}
-          ></i>
         </div>
       </div>
     </div>
