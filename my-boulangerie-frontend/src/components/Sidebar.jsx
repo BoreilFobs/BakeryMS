@@ -5,6 +5,12 @@ import { Tooltip, OverlayTrigger, Button } from "react-bootstrap";
 export default function Sidebar() {
   const domain = "http://localhost:5173/";
   let [expand, setExpand] = useState(true);
+  let [dashboard, setdashboard] = useState(true);
+  let [orders, setorders] = useState(false);
+  let [employees, setemployees] = useState(false);
+  let [calendar, setcalendar] = useState(false);
+  let [customers, setcustomers] = useState(false);
+  let [offers, setoffers] = useState(false);
 
   const toggleSideBar = () => {
     setExpand(!expand);
@@ -34,190 +40,228 @@ export default function Sidebar() {
         ></i>
       </div>
       <div className="pt-5 content d-flex text-light flex-column h-100">
-        <BrowserRouter>
-          <ul className="d-flex gap-5 flex-column">
-            <li>
-              <Link
-                to="/"
-                className="link w-100 d-flex justify-content-start align-items-center position-relative"
+        <ul className="d-flex gap-5 flex-column">
+          <li>
+            <Link
+              to="/"
+              className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              onClick={() => {
+                setdashboard(true);
+                setcalendar(false);
+                setemployees(false);
+                setoffers(false);
+                setorders(false);
+                setcustomers(false);
+              }}
+            >
+              <OverlayTrigger
+                placement={expand ? "" : "right"}
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip id="tooltip-id">Dashboard</Tooltip>}
               >
-                <OverlayTrigger
-                  placement={expand ? "" : "right"}
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={<Tooltip id="tooltip-id">Dashboard</Tooltip>}
-                >
-                  <div
-                    className={`fa fa-dashboard brown2 transition-2 ${
-                      expand ? "fs-5" : "fs-4 hover-light"
-                    }`}
-                  ></div>
-                </OverlayTrigger>
-                {expand ? (
-                  <span className="px-4 fs-5 fw-bold"> Dashboard</span>
+                <div
+                  className={`fa fa-dashboard brown2 transition-2 ${
+                    expand ? "fs-5" : "fs-4 hover-light"
+                  }`}
+                ></div>
+              </OverlayTrigger>
+              {expand ? (
+                <span className="px-4 fs-5 fw-bold"> Dashboard</span>
+              ) : (
+                ""
+              )}
+              <div className="mrk">
+                {dashboard && expand ? (
+                  <i className="fa fa-circle light1"></i>
                 ) : (
-                  ""
+                  " "
                 )}
-                <div className="mrk">
-                  {window.location.href == domain && expand ? (
-                    <i className="fa fa-circle light1"></i>
-                  ) : (
-                    " "
-                  )}
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/Offers"
-                className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/Offers"
+              className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              onClick={() => {
+                setdashboard(false);
+                setcalendar(false);
+                setemployees(false);
+                setoffers(true);
+                setorders(false);
+                setcustomers(false);
+              }}
+            >
+              <OverlayTrigger
+                placement={expand ? "" : "right"}
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip id="tooltip-id">Offers</Tooltip>}
               >
-                <OverlayTrigger
-                  placement={expand ? "" : "right"}
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={<Tooltip id="tooltip-id">Offers</Tooltip>}
-                >
-                  <div
-                    className={`fa fa-dashboard brown2 transition-2 ${
-                      expand ? "fs-5" : "fs-4 hover-light"
-                    }`}
-                  ></div>
-                </OverlayTrigger>
-                {expand ? (
-                  <span className="px-4 fs-5 fw-bold"> Offers</span>
+                <div
+                  className={`fa fa-dashboard brown2 transition-2 ${
+                    expand ? "fs-5" : "fs-4 hover-light"
+                  }`}
+                ></div>
+              </OverlayTrigger>
+              {expand ? <span className="px-4 fs-5 fw-bold"> Offers</span> : ""}
+              <div className="mrk">
+                {offers && expand ? (
+                  <i className="fa fa-circle light1"></i>
                 ) : (
-                  ""
+                  " "
                 )}
-                <div className="mrk">
-                  {window.location.href == `${domain}Offers` && expand ? (
-                    <i className="fa fa-circle light1"></i>
-                  ) : (
-                    " "
-                  )}
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/employees"
-                className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/employees"
+              className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              onClick={() => {
+                setdashboard(false);
+                setcalendar(false);
+                setemployees(true);
+                setoffers(false);
+                setorders(false);
+                setcustomers(false);
+              }}
+            >
+              <OverlayTrigger
+                placement={expand ? "" : "right"}
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip id="tooltip-id">Employees</Tooltip>}
               >
-                <OverlayTrigger
-                  placement={expand ? "" : "right"}
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={<Tooltip id="tooltip-id">Employees</Tooltip>}
-                >
-                  <div
-                    className={`fa fa-dashboard brown2 transition-2 ${
-                      expand ? "fs-5" : "fs-4 hover-light"
-                    }`}
-                  ></div>
-                </OverlayTrigger>
-                {expand ? (
-                  <span className="px-4 fs-5 fw-bold"> Employees</span>
+                <div
+                  className={`fa fa-dashboard brown2 transition-2 ${
+                    expand ? "fs-5" : "fs-4 hover-light"
+                  }`}
+                ></div>
+              </OverlayTrigger>
+              {expand ? (
+                <span className="px-4 fs-5 fw-bold"> Employees</span>
+              ) : (
+                ""
+              )}
+              <div className="mrk">
+                {employees && expand ? (
+                  <i className="fa fa-circle light1"></i>
                 ) : (
-                  ""
+                  " "
                 )}
-                <div className="mrk">
-                  {window.location.href == `${domain}employees` && expand ? (
-                    <i className="fa fa-circle light1"></i>
-                  ) : (
-                    " "
-                  )}
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/customers"
-                className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/customers"
+              className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              onClick={() => {
+                setdashboard(false);
+                setcalendar(false);
+                setemployees(false);
+                setoffers(false);
+                setorders(false);
+                setcustomers(true);
+              }}
+            >
+              <OverlayTrigger
+                placement={expand ? "" : "right"}
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip id="tooltip-id">Customers</Tooltip>}
               >
-                <OverlayTrigger
-                  placement={expand ? "" : "right"}
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={<Tooltip id="tooltip-id">Customers</Tooltip>}
-                >
-                  <div
-                    className={`fa fa-dashboard brown2 transition-2 ${
-                      expand ? "fs-5" : "fs-4 hover-light"
-                    }`}
-                  ></div>
-                </OverlayTrigger>
-                {expand ? (
-                  <span className="px-4 fs-5 fw-bold"> Customers</span>
+                <div
+                  className={`fa fa-dashboard brown2 transition-2 ${
+                    expand ? "fs-5" : "fs-4 hover-light"
+                  }`}
+                ></div>
+              </OverlayTrigger>
+              {expand ? (
+                <span className="px-4 fs-5 fw-bold"> Customers</span>
+              ) : (
+                ""
+              )}
+              <div className="mrk">
+                {window.location.href == `${domain}customers` && expand ? (
+                  <i className="fa fa-circle light1"></i>
                 ) : (
-                  ""
+                  " "
                 )}
-                <div className="mrk">
-                  {window.location.href == `${domain}customers` && expand ? (
-                    <i className="fa fa-circle light1"></i>
-                  ) : (
-                    " "
-                  )}
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/orders"
-                className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/orders"
+              className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              onClick={() => {
+                setdashboard(false);
+                setcalendar(false);
+                setemployees(false);
+                setoffers(false);
+                setorders(true);
+                setcustomers(false);
+              }}
+            >
+              <OverlayTrigger
+                placement={expand ? "" : "right"}
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip id="tooltip-id">Orders</Tooltip>}
               >
-                <OverlayTrigger
-                  placement={expand ? "" : "right"}
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={<Tooltip id="tooltip-id">Orders</Tooltip>}
-                >
-                  <div
-                    className={`fa fa-dashboard brown2 transition-2 ${
-                      expand ? "fs-5" : "fs-4 hover-light"
-                    }`}
-                  ></div>
-                </OverlayTrigger>
-                {expand ? (
-                  <span className="px-4 fs-5 fw-bold"> Orders</span>
+                <div
+                  className={`fa fa-dashboard brown2 transition-2 ${
+                    expand ? "fs-5" : "fs-4 hover-light"
+                  }`}
+                ></div>
+              </OverlayTrigger>
+              {expand ? <span className="px-4 fs-5 fw-bold"> Orders</span> : ""}
+              <div className="mrk">
+                {orders && expand ? (
+                  <i className="fa fa-circle light1"></i>
                 ) : (
-                  ""
+                  " "
                 )}
-                <div className="mrk">
-                  {window.location.href == `${domain}orders` && expand ? (
-                    <i className="fa fa-circle light1"></i>
-                  ) : (
-                    " "
-                  )}
-                </div>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/calendar"
-                className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/calendar"
+              className="link w-100 d-flex justify-content-start align-items-center position-relative"
+              onClick={() => {
+                setdashboard(false);
+                setcalendar(true);
+                setemployees(false);
+                setoffers(false);
+                setorders(false);
+                setcustomers(false);
+              }}
+            >
+              <OverlayTrigger
+                placement={expand ? "" : "right"}
+                delay={{ show: 250, hide: 400 }}
+                overlay={<Tooltip id="tooltip-id">Calendar</Tooltip>}
               >
-                <OverlayTrigger
-                  placement={expand ? "" : "right"}
-                  delay={{ show: 250, hide: 400 }}
-                  overlay={<Tooltip id="tooltip-id">Calendar</Tooltip>}
-                >
-                  <div
-                    className={`fa fa-calendar brown2 transition-2 ${
-                      expand ? "fs-5" : "fs-4 hover-light"
-                    }`}
-                  ></div>
-                </OverlayTrigger>
-                {expand ? (
-                  <span className="px-4 fs-5 fw-bold"> Calendar</span>
+                <div
+                  className={`fa fa-calendar brown2 transition-2 ${
+                    expand ? "fs-5" : "fs-4 hover-light"
+                  }`}
+                ></div>
+              </OverlayTrigger>
+              {expand ? (
+                <span className="px-4 fs-5 fw-bold"> Calendar</span>
+              ) : (
+                ""
+              )}
+              <div className="mrk">
+                {calendar && expand ? (
+                  <i className="fa fa-circle light1"></i>
                 ) : (
-                  ""
+                  " "
                 )}
-                <div className="mrk">
-                  {window.location.href == `${domain}calendar` && expand ? (
-                    <i className="fa fa-circle light1"></i>
-                  ) : (
-                    " "
-                  )}
-                </div>
-              </Link>
-            </li>
-          </ul>
-        </BrowserRouter>
+              </div>
+            </Link>
+          </li>
+        </ul>
       </div>
     </div>
   );

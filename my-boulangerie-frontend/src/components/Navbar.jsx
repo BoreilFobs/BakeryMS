@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import { Link, BrowserRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
@@ -21,36 +21,34 @@ export default function Navbar() {
           ></i>
         </div>
         <div className="icons d-flex align-items-center justify-content-between gap-4 brown1">
-          <BrowserRouter>
-            <Link to="/">
-              {" "}
-              <i
-                className="fas fa-home fs-5 pointer hover-dark brown1 transition-1"
-                title="dashboard"
-              ></i>
-            </Link>
-            <Link to="/messages">
-              <i
-                className="fa fa-bell fs-5 pointer hover-dark brown1 transition-1"
-                aria-hidden="true"
-              ></i>
-            </Link>
-            <Link to="/calendar">
-              {" "}
-              <i
-                className="fa fa-calendar fs-5 pointer hover-dark brown1 transition-1"
-                aria-hidden="true"
-                title="calender"
-              ></i>
-            </Link>
-            <Link to="/settings">
-              <i
-                className="fa fa-gear fs-3 pointer hover-dark brown1 transition-1"
-                aria-hidden="true"
-                title="Settings"
-              ></i>
-            </Link>
-          </BrowserRouter>
+          <Link to="/">
+            {" "}
+            <i
+              className="fas fa-home fs-5 pointer hover-dark brown1 transition-1"
+              title="dashboard"
+            ></i>
+          </Link>
+          <Link to="/messages">
+            <i
+              className="fa fa-bell fs-5 pointer hover-dark brown1 transition-1"
+              aria-hidden="true"
+            ></i>
+          </Link>
+          <Link to="/calendar">
+            {" "}
+            <i
+              className="fa fa-calendar fs-5 pointer hover-dark brown1 transition-1"
+              aria-hidden="true"
+              title="calender"
+            ></i>
+          </Link>
+          <Link to="/settings">
+            <i
+              className="fa fa-gear fs-3 pointer hover-dark brown1 transition-1"
+              aria-hidden="true"
+              title="Settings"
+            ></i>
+          </Link>
         </div>
       </div>
     </div>

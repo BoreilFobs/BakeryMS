@@ -2,7 +2,7 @@
 import React from "react";
 
 const Settings = () => {
-  return <div className="dark">Settings</div>;
+  return <div className="dark fw-bold">Settings</div>;
 };
 
 export default Settings;

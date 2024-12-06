@@ -1,5 +1,6 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 
 export default function Calendar() {
-  return <div>CALENDAR</div>;
+  return <div className="dark fw-bold">CALENDAR</div>;
 }
