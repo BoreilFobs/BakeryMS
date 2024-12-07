@@ -23,11 +23,16 @@
 }
 
 body {
-  width: 100vw;
-  height: 100vw;
-  overflow: hidden;
+  max-width: 100vw;
+  max-height: 100vh;
+  overflow-y: scroll;
 }
-
+.bg-img1 {
+  background-image: url("./assets/bg1.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 /* -------------------------------------------------utility clases-------------------------------------------- */
 .brown1 {
   color: var(--brown-1);
@@ -56,10 +61,20 @@ body {
   color: var(--light);
 }
 .bglight {
-  background-color: var(--light);
+  background: rgba(231, 221, 180, 0.637); /* Transparent version of #e7ddb4 */
+  backdrop-filter: blur(10px); /* Frosted glass effect */
+  -webkit-backdrop-filter: blur(10px); /* Support for Safari */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 .bgdark {
-  background-color: var(--dark);
+  background: rgba(36, 35, 49, 0.534);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0 15px 15px 0;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 .bottom50 {
   bottom: 55px;
@@ -67,12 +82,7 @@ body {
 .cursive {
   font-family: cursive;
 }
-.bshadow {
-  box-shadow: whitesmoke 2px 12px 24px;
-}
-.bshadowblack {
-  box-shadow: rgb(161, 172, 115) 2px 2px 15px;
-}
+
 .pointer {
   cursor: pointer;
 }
@@ -91,6 +101,7 @@ body {
 /* -------------sidebar------------------------- */
 .sidebar {
   width: 20vw;
+  top: 0;
 }
 .sidebar .link {
   text-decoration: none;
@@ -110,3 +121,7 @@ body {
 }
 
 /* -------------------------------styling the main component------------------------------------ */
+.main {
+  padding-top: 80px;
+  padding-left: 10px;
+}

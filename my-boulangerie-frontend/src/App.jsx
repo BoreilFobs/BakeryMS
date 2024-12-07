@@ -14,14 +14,14 @@ import Messages from "./components/Messages";
 function App() {
   return (
     <BrowserRouter>
-      <div className="bglight min-vh-100 min-vw-100 overflow-hidden">
+      <div className="bg-img1 min-vh-100 min-vw-100 overflow-hidden">
         <div className="">
           <Navbar />
-          <div className="d-flex">
+          <div className="d-flex gap-0">
             <div className="sidebar">
               <Sidebar />
             </div>
-            <div className="p-5 ">
+            <div className="main overflow-x-scroll">
               <Routes>
                 <Route path="/" element={<Dashboard />}></Route>
                 <Route path="/offers" element={<Offers />}></Route>
