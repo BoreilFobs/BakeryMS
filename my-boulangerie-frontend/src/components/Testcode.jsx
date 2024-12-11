@@ -11,7 +11,7 @@ import {
 
 export default function Testcode() {
   return (
-    <div className="d-flex gap-4">
+    <div className="d-flex gap-3 flex-wrap">
       <div className=" bglight rounded-4 transition-2">
         <VictoryChart
           domainPadding={{ x: 40 }}

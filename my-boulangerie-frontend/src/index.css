@@ -33,6 +33,12 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+.bg-login {
+  background-image: url("./assets/bg-login.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 /* -------------------------------------------------utility clases-------------------------------------------- */
 .brown1 {
   color: var(--brown-1);
@@ -61,14 +67,14 @@ body {
   color: var(--light);
 }
 .bglight {
-  background: rgba(231, 221, 180, 0.637); /* Transparent version of #e7ddb4 */
-  backdrop-filter: blur(10px); /* Frosted glass effect */
-  -webkit-backdrop-filter: blur(10px); /* Support for Safari */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Light border */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  background: rgba(231, 221, 180, 0.308);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 .bgdark {
-  background: rgba(36, 35, 49, 0.534);
+  background: rgba(36, 35, 49, 0.658);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -100,7 +106,7 @@ body {
 
 /* -------------sidebar------------------------- */
 .sidebar {
-  width: 20vw;
+  width: 280px;
   top: 0;
 }
 .sidebar .link {
@@ -122,6 +128,75 @@ body {
 
 /* -------------------------------styling the main component------------------------------------ */
 .main {
-  padding-top: 80px;
+  padding-top: 120px;
   padding-left: 10px;
+}
+.nav {
+  justify-content: end;
+}
+/* ------------------------------login--------------------------------------------------------- */
+.login {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.form-login-img {
+  min-width: 100px;
+  min-height: 100px;
+}
+.label-login {
+  font-size: 13px;
+  font-weight: 500;
+}
+.form-control-login {
+  background-color: #ddca7d59;
+  border-color: var(--brown-2);
+  font-size: 15px;
+}
+.form-control-login:focus {
+  background-color: #ddca7d59;
+  border-color: var(--brown-2);
+  box-shadow: #533e2d 2px 5px 1px;
+}
+.submit-login {
+  background-color: #533e2d;
+  color: #ddca7d;
+}
+.submit-login:hover {
+  background-color: var(--brown-2);
+}
+.errors-login {
+  right: 25px;
+  top: 10px;
+}
+.alert-danger {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background-color: rgba(248, 3, 3, 0.315);
+  animation: show-notif 0.2s ease;
+  font-size: 15px;
+}
+@keyframes show-notif {
+  from {
+    right: -200px;
+  }
+  to {
+    right: 0;
+  }
+}
+@media screen and (max-width: 960px) {
+  .errors-login {
+    min-width: 50%;
+  }
+}
+/* nav responsiveness */
+@media screen and (max-width: 960px) {
+  .nav {
+    justify-content: center;
+    gap: 30px;
+  }
+  .nav .nav-content {
+    gap: 30px;
+    width: 100%;
+  }
 }

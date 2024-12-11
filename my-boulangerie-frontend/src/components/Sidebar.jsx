@@ -5,12 +5,6 @@ import { Tooltip, OverlayTrigger, Button } from "react-bootstrap";
 export default function Sidebar() {
   const domain = "http://localhost:5173/";
   let [expand, setExpand] = useState(true);
-  let [dashboard, setdashboard] = useState(true);
-  let [orders, setorders] = useState(false);
-  let [employees, setemployees] = useState(false);
-  let [calendar, setcalendar] = useState(false);
-  let [customers, setcustomers] = useState(false);
-  let [offers, setoffers] = useState(false);
 
   const toggleSideBar = () => {
     setExpand(!expand);
@@ -44,16 +38,8 @@ export default function Sidebar() {
           <ul className="d-flex gap-5 flex-column">
             <li>
               <Link
-                to="/"
+                to="/dashboard"
                 className="link w-100 d-flex justify-content-start align-items-center position-relative"
-                onClick={() => {
-                  setdashboard(true);
-                  setcalendar(false);
-                  setemployees(false);
-                  setoffers(false);
-                  setorders(false);
-                  setcustomers(false);
-                }}
               >
                 <OverlayTrigger
                   placement={expand ? "" : "right"}
@@ -72,7 +58,7 @@ export default function Sidebar() {
                   ""
                 )}
                 <div className="mrk">
-                  {dashboard && expand ? (
+                  {document.URL == `${domain}dashboard` && expand ? (
                     <i className="fa fa-circle light1"></i>
                   ) : (
                     " "
@@ -84,14 +70,6 @@ export default function Sidebar() {
               <Link
                 to="/Offers"
                 className="link w-100 d-flex justify-content-start align-items-center position-relative"
-                onClick={() => {
-                  setdashboard(false);
-                  setcalendar(false);
-                  setemployees(false);
-                  setoffers(true);
-                  setorders(false);
-                  setcustomers(false);
-                }}
               >
                 <OverlayTrigger
                   placement={expand ? "" : "right"}
@@ -110,7 +88,7 @@ export default function Sidebar() {
                   ""
                 )}
                 <div className="mrk">
-                  {offers && expand ? (
+                  {document.URL == `${domain}Offers` && expand ? (
                     <i className="fa fa-circle light1"></i>
                   ) : (
                     " "
@@ -122,14 +100,6 @@ export default function Sidebar() {
               <Link
                 to="/employees"
                 className="link w-100 d-flex justify-content-start align-items-center position-relative"
-                onClick={() => {
-                  setdashboard(false);
-                  setcalendar(false);
-                  setemployees(true);
-                  setoffers(false);
-                  setorders(false);
-                  setcustomers(false);
-                }}
               >
                 <OverlayTrigger
                   placement={expand ? "" : "right"}
@@ -148,7 +118,7 @@ export default function Sidebar() {
                   ""
                 )}
                 <div className="mrk">
-                  {employees && expand ? (
+                  {document.URL == `${domain}employees` && expand ? (
                     <i className="fa fa-circle light1"></i>
                   ) : (
                     " "
@@ -160,14 +130,6 @@ export default function Sidebar() {
               <Link
                 to="/customers"
                 className="link w-100 d-flex justify-content-start align-items-center position-relative"
-                onClick={() => {
-                  setdashboard(false);
-                  setcalendar(false);
-                  setemployees(false);
-                  setoffers(false);
-                  setorders(false);
-                  setcustomers(true);
-                }}
               >
                 <OverlayTrigger
                   placement={expand ? "" : "right"}
@@ -186,7 +148,7 @@ export default function Sidebar() {
                   ""
                 )}
                 <div className="mrk">
-                  {window.location.href == `${domain}customers` && expand ? (
+                  {document.URL == `${domain}customers` && expand ? (
                     <i className="fa fa-circle light1"></i>
                   ) : (
                     " "
@@ -198,14 +160,6 @@ export default function Sidebar() {
               <Link
                 to="/orders"
                 className="link w-100 d-flex justify-content-start align-items-center position-relative"
-                onClick={() => {
-                  setdashboard(false);
-                  setcalendar(false);
-                  setemployees(false);
-                  setoffers(false);
-                  setorders(true);
-                  setcustomers(false);
-                }}
               >
                 <OverlayTrigger
                   placement={expand ? "" : "right"}
@@ -224,7 +178,7 @@ export default function Sidebar() {
                   ""
                 )}
                 <div className="mrk">
-                  {orders && expand ? (
+                  {document.URL == `${domain}orders` && expand ? (
                     <i className="fa fa-circle light1"></i>
                   ) : (
                     " "
@@ -236,14 +190,6 @@ export default function Sidebar() {
               <Link
                 to="/calendar"
                 className="link w-100 d-flex justify-content-start align-items-center position-relative"
-                onClick={() => {
-                  setdashboard(false);
-                  setcalendar(true);
-                  setemployees(false);
-                  setoffers(false);
-                  setorders(false);
-                  setcustomers(false);
-                }}
               >
                 <OverlayTrigger
                   placement={expand ? "" : "right"}
@@ -262,7 +208,7 @@ export default function Sidebar() {
                   ""
                 )}
                 <div className="mrk">
-                  {calendar && expand ? (
+                  {document.URL == `${domain}calendar` && expand ? (
                     <i className="fa fa-circle light1"></i>
                   ) : (
                     " "

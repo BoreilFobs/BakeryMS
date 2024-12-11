@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 export default function Navbar() {
   return (
     <div className=" position-fixed w-100 z-1">
-      <div className="bglight h55 d-flex justify-content-end gap-5 p-2 pe-5">
-        <div className="d-flex align-items-center justify-content-between w-50">
+      <div className="bglight h55 nav d-flex gap-5 p-2 pe-5">
+        <div className="d-flex nav-content align-items-center justify-content-between w-50">
           <div className="searchbar d-flex justify-content-center align-items-center gap-2">
             <input
               type="text"
