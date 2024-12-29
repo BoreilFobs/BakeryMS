@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import Testcode from "./Testcode";
-import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
+import Testcode from "../Testcode";
+import Sidebar from "../Bars/Sidebar";
+import Navbar from "../Bars/Navbar";
 
 export default function Dashboard() {
   return (

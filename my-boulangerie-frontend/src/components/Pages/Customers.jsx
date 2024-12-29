@@ -1,8 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
-const Employees = () => {
+import Navbar from "../Bars/Navbar";
+import Sidebar from "../Bars/Sidebar";
+
+export default function Customers() {
   return (
     <div className="bg-img1 min-vh-100 min-vw-100 overflow-hidden">
       <div className="">
@@ -12,12 +13,10 @@ const Employees = () => {
             <Sidebar />
           </div>
           <div className="main overflow-y-scroll">
-            <div className="dark fw-bold">employees</div>
+            <div className="dark fw-bold">customers</div>
           </div>
         </div>
       </div>
     </div>
   );
-};
-
-export default Employees;
+}

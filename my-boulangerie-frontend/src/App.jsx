@@ -1,14 +1,15 @@
 import { BrowserRouter } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import Offers from "./components/Offers";
-import Employees from "./components/Employees";
-import Customers from "./components/Customers";
-import Orders from "./components/Orders";
-import Calendar from "./components/Calendar";
-import Settings from "./components/Settings";
-import Messages from "./components/Messages";
-import Login from "./components/Login";
+import Dashboard from "./components/Pages/Dashboard";
+import Offers from "./components/Pages/Offers";
+import Employees from "./components/Pages/Employees";
+import Customers from "./components/Pages/Customers";
+import Orders from "./components/Pages/Orders";
+import Calendar from "./components/Pages/Calendar";
+import Settings from "./components/Pages/Settings";
+import Messages from "./components/Pages/Messages";
+import Login from "./components/Pages/Login";
+import AddEmp from "./components/Pages/AddEmp";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/calendar" element={<Calendar />}></Route>
         <Route path="/settings" element={<Settings />}></Route>
         <Route path="/messages" element={<Messages />}></Route>
+        <Route path="/addEmp" element={<AddEmp />}></Route>
       </Routes>
     </BrowserRouter>
   );

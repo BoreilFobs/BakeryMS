@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
+import Navbar from "../Bars/Navbar";
+import Sidebar from "../Bars/Sidebar";
 
 const Messages = () => {
   return (

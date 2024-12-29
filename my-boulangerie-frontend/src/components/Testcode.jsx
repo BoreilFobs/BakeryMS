@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
+import img from '../assets/bg1.jpeg'
 import {
   VictoryAxis,
   VictoryBar,
@@ -85,6 +86,13 @@ export default function Testcode() {
           theme={VictoryTheme.clean}
           animate={{ duration: 500 }}
         />
+      </div>
+      <div class="card">
+        <img class="card-img-top" src={img} />
+        <div class="card-body">
+          <h1 class="card-title">Title</h1>
+          <p class="card-text">Text</p>
+        </div>
       </div>
     </div>
   );

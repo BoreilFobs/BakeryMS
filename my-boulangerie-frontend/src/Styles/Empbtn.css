@@ -1,0 +1,68 @@
+:root {
+  --dark: #242331;
+  --light: #e7ddb4;
+  --brown-1: #533e2d;
+  --brown-2: #b88b4a;
+  --brown-3: #ddca7d;
+}
+.wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.link_wrapper {
+  position: relative;
+}
+
+.more {
+  display: block;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  font-weight: bold;
+  text-decoration: none;
+  background: var(--brown-1);
+  text-align: center;
+  color: var(--brown-3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 3px solid var(--brown-1);
+  transition: all 0.35s;
+  cursor: pointer;
+}
+
+.icon {
+  width: 50px;
+  height: 50px;
+  border: 3px solid transparent;
+  position: absolute;
+  transform: rotate(45deg);
+  right: 0;
+  top: 0;
+  z-index: -1;
+  transition: all 0.35s;
+}
+
+.icon svg {
+  width: 30px;
+  position: absolute;
+  top: calc(50% - 15px);
+  left: calc(50% - 15px);
+  transform: rotate(-45deg);
+  fill: var(--brown-1);
+  transition: all 0.35s;
+}
+
+.more:hover {
+  width: 190px;
+  border: 3px solid var(--brown-1);
+  background: transparent;
+  color: var(--brown-1);
+}
+
+.more:hover + .icon {
+  border: 3px solid var(--brown-1);
+  right: -25%;
+}

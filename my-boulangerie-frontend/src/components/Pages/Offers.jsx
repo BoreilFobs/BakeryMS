@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
+import Navbar from "../Bars/Navbar";
+import Sidebar from "../Bars/Sidebar";
 
-export default function Orders() {
+export default function Offers() {
   return (
     <div className="bg-img1 min-vh-100 min-vw-100 overflow-hidden">
       <div className="">
@@ -12,7 +12,7 @@ export default function Orders() {
           <div className="sidebar">
             <Sidebar />
           </div>
-          <div className="main overflow-y-scroll">
+          <div className="main  overflow-y-scroll">
             <div className="dark fw-bold">customers</div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import logo from "../assets/react.svg";
+import logo from "../../assets/react.svg";
 import { Navigate, useNavigate } from "react-router-dom";
-import Alert from "./Alert";
+import Alert from "../Alerts/Alert";
 export default function Login() {
   let [userName, setUserName] = useState("");
   let [password, setPassword] = useState("");
@@ -49,12 +49,12 @@ export default function Login() {
           Boulangerie de L&apos;esperance
         </div>
         <div className=" form-group mb-3">
-          <label htmlFor="userName" className="mb-1 brown1 label-login">
+          <label htmlFor="userName" className="mb-1 brown1 label-bakery">
             User Name
           </label>
           <input
             type="text"
-            className="fs-6 form-control form-control-login"
+            className="fs-6 form-control form-control-bakery"
             name="userName"
             id="userName"
             placeholder="User Name"
@@ -64,12 +64,12 @@ export default function Login() {
           />
         </div>
         <div className=" form-group mb-3">
-          <label htmlFor="password" className="brown1 mb-1 label-login">
+          <label htmlFor="password" className="brown1 mb-1 label-bakery">
             Password
           </label>
           <input
             type="password"
-            className="form-control fs-6 form-control-login"
+            className="form-control fs-6 form-control-bakery"
             name="password"
             id="password"
             placeholder="Enter password"
@@ -82,7 +82,7 @@ export default function Login() {
         <input
           type="submit"
           value="Login"
-          className="btn submit-login mt-2 button w-50"
+          className="btn btn-bakery mt-2 button w-50"
           onClick={handleSubmit}
         />
       </form>
