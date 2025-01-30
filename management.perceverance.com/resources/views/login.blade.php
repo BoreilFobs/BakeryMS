@@ -35,35 +35,50 @@
               <div class="info d-flex align-items-center">
                 <div class="content">
                   <div class="logo">
-                    <h1>Dashboard</h1>
+                    <img src="../img/logo.png" alt="">
+                    {{-- <h1>Dashboard</h1> --}}
                   </div>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                 </div>
               </div>
             </div>
             <!-- Form Panel    -->
-            <div class="col-lg-6 bg-white">
+            <div class="col-lg-6 bg-transparent">
               <div class="form d-flex align-items-center">
-                <div class="content">
-                  <form method="get" class="form-validate">
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+
+                    <div class="content">
+                        <div
+                        class="alert alert-danger error"
+                        role="alert"
+                    >
+                        <strong>{{ $error }}</strong>
+                    </div>
+                    @endforeach
+
+                @endif
+
+                  <form method="post" action="{{url('/adminLogin')}}" class="form-validate">
+                    @csrf
                     <div class="form-group">
-                      <input id="login-username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
+                      <input id="login-username" type="text" name="name" required data-msg="Please enter your username" class="input-material">
                       <label for="login-username" class="label-material">User Name</label>
                     </div>
                     <div class="form-group">
-                      <input id="login-password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                      <input id="login-password" type="password" name="password" required data-msg="Please enter your password" class="input-material">
                       <label for="login-password" class="label-material">Password</label>
-                    </div><a id="login" href="{{ url('/home')}}" class="btn btn-primary">Login</a>
+                    </div><button type="submit" class="btn btn-danger">Login</button><br><br>
                     <!-- This should be submit button but I replaced it with <a> for demo purposes-->
-                  </form><a href="#" class="forgot-pass">Forgot Password?</a><br><small>Do not have an account? </small><a href="register.html" class="signup">Signup</a>
+                  </form>
+                  {{-- <a href="#" class="forgot-pass">Forgot Password?</a><br> --}}
                 </div>
               </div>
             </div>
           </div>
+          <div class="copyrights text-center">
+             <p>2025 &copy; Fobs Enterprise.
+          </div>
         </div>
-      </div>
-      <div class="copyrights text-center">
-         <p>2025 &copy; Fobs Enterprise.
       </div>
     </div>
     <!-- JavaScript files-->

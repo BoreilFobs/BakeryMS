@@ -45,8 +45,8 @@
         <div class="container-fluid d-flex align-items-center justify-content-between">
           <div class="navbar-header">
             <!-- Navbar Header--><a href="{{ url('/home') }}" class="navbar-brand">
-              <div class="brand-text brand-big visible text-uppercase"><strong class="text-primary">Dark</strong><strong>Admin</strong></div>
-              <div class="brand-text brand-sm"><strong class="text-primary">D</strong><strong>A</strong></div></a>
+              <div class="brand-text brand-big visible text-uppercase"><strong class="text-primary">La</strong><strong>Perceverance</strong></div>
+              <div class="brand-text brand-sm"><strong class="text-primary">L</strong><strong>P</strong></div></a>
             <!-- Sidebar Toggle Btn-->
             <button class="sidebar-toggle"><i class="fa fa-long-arrow-left"></i></button>
           </div>
@@ -98,75 +98,19 @@
             </div>
             <!-- Tasks end-->
             <!-- Megamenu-->
-            <div class="list-inline-item dropdown menu-large"><a href="#" data-toggle="dropdown" class="nav-link">Mega <i class="fa fa-ellipsis-v"></i></a>
+            <div class="list-inline-item dropdown menu-large"><a href="#" data-toggle="dropdown" class="nav-link">Docs <i class="fa fa-ellipsis-v"></i></a>
               <div class="dropdown-menu megamenu">
-                {{-- <div class="row">
-                  <div class="col-lg-3 col-md-6"><strong class="text-uppercase">Elements Heading</strong>
-                    <ul class="list-unstyled mb-3">
-                      <li><a href="#">Lorem ipsum dolor</a></li>
-                      <li><a href="#">Sed ut perspiciatis</a></li>
-                      <li><a href="#">Voluptatum deleniti</a></li>
-                      <li><a href="#">At vero eos</a></li>
-                      <li><a href="#">Consectetur adipiscing</a></li>
-                      <li><a href="#">Duis aute irure</a></li>
-                      <li><a href="#">Necessitatibus saepe</a></li>
-                      <li><a href="#">Maiores alias</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-3 col-md-6"><strong class="text-uppercase">Elements Heading</strong>
-                    <ul class="list-unstyled mb-3">
-                      <li><a href="#">Lorem ipsum dolor</a></li>
-                      <li><a href="#">Sed ut perspiciatis</a></li>
-                      <li><a href="#">Voluptatum deleniti</a></li>
-                      <li><a href="#">At vero eos</a></li>
-                      <li><a href="#">Consectetur adipiscing</a></li>
-                      <li><a href="#">Duis aute irure</a></li>
-                      <li><a href="#">Necessitatibus saepe</a></li>
-                      <li><a href="#">Maiores alias</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-3 col-md-6"><strong class="text-uppercase">Elements Heading</strong>
-                    <ul class="list-unstyled mb-3">
-                      <li><a href="#">Lorem ipsum dolor</a></li>
-                      <li><a href="#">Sed ut perspiciatis</a></li>
-                      <li><a href="#">Voluptatum deleniti</a></li>
-                      <li><a href="#">At vero eos</a></li>
-                      <li><a href="#">Consectetur adipiscing</a></li>
-                      <li><a href="#">Duis aute irure</a></li>
-                      <li><a href="#">Necessitatibus saepe</a></li>
-                      <li><a href="#">Maiores alias</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-3 col-md-6"><strong class="text-uppercase">Elements Heading</strong>
-                    <ul class="list-unstyled mb-3">
-                      <li><a href="#">Lorem ipsum dolor</a></li>
-                      <li><a href="#">Sed ut perspiciatis</a></li>
-                      <li><a href="#">Voluptatum deleniti</a></li>
-                      <li><a href="#">At vero eos</a></li>
-                      <li><a href="#">Consectetur adipiscing</a></li>
-                      <li><a href="#">Duis aute irure</a></li>
-                      <li><a href="#">Necessitatibus saepe</a></li>
-                      <li><a href="#">Maiores alias</a></li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="row megamenu-buttons text-center">
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-1"><i class="fa fa-clock-o"></i><strong>Demo 1</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-2"><i class="fa fa-clock-o"></i><strong>Demo 2</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-3"><i class="fa fa-clock-o"></i><strong>Demo 3</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link dashbg-4"><i class="fa fa-clock-o"></i><strong>Demo 4</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link bg-danger"><i class="fa fa-clock-o"></i><strong>Demo 5</strong></a></div>
-                  <div class="col-lg-2 col-md-4"><a href="#" class="d-block megamenu-button-link bg-info"><i class="fa fa-clock-o"></i><strong>Demo 6</strong></a></div>
-                </div> --}}
               </div>
             </div>
             <!-- Megamenu end     -->
             <!-- Languages dropdown    -->
             <div class="list-inline-item dropdown"><a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
-              <div aria-labelledby="languages" class="dropdown-menu"><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French  </span></a></div>
+              <div aria-labelledby="languages" class="dropdown-menu">
+                {{-- <a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a> --}}
+                <a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French  </span></a></div>
             </div>
             <!-- Log out               -->
-            <div class="list-inline-item logout">                   <a id="logout" href="{{ url("/")}}" class="nav-link">Logout <i class="icon-logout"></i></a></div>
+            <div class="list-inline-item logout"><a id="logout" href="{{ url("/")}}" class="nav-link">Logout <i class="icon-logout"></i></a></div>
           </div>
         </div>
       </nav>
@@ -178,8 +122,8 @@
         <div class="sidebar-header d-flex align-items-center">
           <div class="avatar"><img src="img/avatar-6.jpg" alt="..." class="img-fluid rounded-circle"></div>
           <div class="title">
-            <h1 class="h5">Mark Stephen</h1>
-            <p>Web Designer</p>
+            <h1 class="h5">Mr Maxim</h1>
+            <p>Directeur</p>
           </div>
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
@@ -188,7 +132,7 @@
                 <li><a href="{{ url('/offers') }}"> <i class="icon-grid"></i>Offers </a></li>
                 <li><a href="{{url('/employees')}}"> <i class="fa fa-bar-chart"></i>Employees </a></li>
                 <li class="active"><a href="{{url('/customers')}}"> <i class="fa fa-bar-chart"></i>Customers </a></li>
-                <li><a href="{{ url('/orders')}}">  Orders </a></li>
+                <li><a href="{{ url('/orders')}}"><i class="fa fa-bar-chart"></i> Orders </a></li>
 {{-- example dropdown code --}}
 
                 {{-- <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Example dropdown </a>
@@ -202,14 +146,45 @@
       </nav>
       <div class="page-content">
          <div class="page-header">
-          <div class="container-fluid">
+          <div class="container-fluid d-flex justify-content-between align-items-center">
             <h2 class="h5 no-margin-bottom">CUSTOMERS</h2>
+            <a href="{{url('customers/form')}}" class="btn btn-success">ADD <i class="fa fa-plus"></i></a>
           </div>
         </div>
         <section class="no-padding-top no-padding-bottom">
             <div class="container-fluid">
                 {{-- here is where my content enter..... --}}
+            <div class="public-user-block block">
+              <div class="row d-flex align-items-center">
+                <div class="col-lg-4 d-flex align-items-center">
+                  <div class="order">6th</div>
+                  <div class="avatar">
+                    <img src="img/avatar-6.jpg" alt="..." class="img-fluid" />
+                  </div>
+                  <a href="{{url('/customers/actions')}}" class="name"
+                    ><strong class="d-block">Arther Kooper</strong
+                    ><span class="d-block">See Actions</span></a
+                  >
+                </div>
+                <div class="col-lg-4 text-center">
+                  <div class="contributions">170 Command passed</div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="details d-flex">
+                    <div class="item">
+                      <i class="icon-info"></i><strong>60</strong>
+                    </div>
+                    <div class="item">
+                      <i class="fa fa-gg"></i><strong>70</strong>
+                    </div>
+                    <div class="item">
+                      <i class="icon-flow-branch"></i><strong>40</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+        </div>
         </section>
       </div>
 
