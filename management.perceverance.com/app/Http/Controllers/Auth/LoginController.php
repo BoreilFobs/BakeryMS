@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class adminController extends Controller
+class LoginController extends Controller
 {
     //
     public function show(){
-        return view('login');
+        return view('welcome');
     }
      public function login(Request $request)
     {
@@ -22,7 +22,7 @@ class adminController extends Controller
         $password = trim($request->password);
         // Attempt to log the user in
         if (Auth::guard('web')->attempt(['name' => $name , 'password' => $password])) {
-            return redirect('/home');
+            return redirect('/dashboard');
         }else {
             // Authentication failed
             return back()->withErrors([
@@ -32,6 +32,7 @@ class adminController extends Controller
 
     }
     public function logout(){
+        Auth::logout();
         return redirect('/');
     }
 }

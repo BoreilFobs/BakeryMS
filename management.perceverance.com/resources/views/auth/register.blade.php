@@ -58,7 +58,7 @@
 
                 @endif
 
-                  <form method="post" action="{{url('/adminLogin')}}" class="form-validate">
+                  <form method="post"  action="{{ route('register')}}" class="form-validate">
                     @csrf
                     <div class="form-group">
                       <input id="login-username" type="text" name="name" required data-msg="Please enter your username" class="input-material">
@@ -67,7 +67,14 @@
                     <div class="form-group">
                       <input id="login-password" type="password" name="password" required data-msg="Please enter your password" class="input-material">
                       <label for="login-password" class="label-material">Password</label>
-                    </div><button type="submit" class="btn btn-danger">Login</button><br><br>
+                    </div>
+                    <div class="form-group terms-conditions text-center">
+                      <input id="register-agree" name="registerAgree" type="checkbox" required value="1" data-msg="Your agreement is required" class="checkbox-template">
+                      <label for="register-agree">I agree with the terms and policy</label>
+                    </div>
+                    <button type="submit" class="btn btn-danger">Signup</button><br><br>
+                    <small>Already have an account? </small><a href="{{url('/login')}}" class="signup">Login</a>
+
                     <!-- This should be submit button but I replaced it with <a> for demo purposes-->
                   </form>
                   {{-- <a href="#" class="forgot-pass">Forgot Password?</a><br> --}}

@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\adminAuthenticationController;
-use App\Http\Controllers\adminController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,7 +31,20 @@ use Illuminate\Support\Facades\Route;
         return view('orders');
     });
 // });
-Route::get('/', [adminController::class, 'show']);
-Route::post('/adminLogin', [adminController::class, 'login']);
-Route::get('/logout', [adminController::class, 'logout']);
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/logout', [LoginController::class, 'logout']);
 Route::get('/employees/form', [EmployeeController::class, 'index']);
+Route::post('/employees/create', [EmployeeController::class, 'store']);
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('home');
+    })->name('home');
+});

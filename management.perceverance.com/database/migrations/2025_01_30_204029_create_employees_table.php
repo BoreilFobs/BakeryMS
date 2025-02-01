@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string("emp_name");
-            $table->date("emp_dob");
-            $table->string("emp_pob");
+            $table->date("emp_dob")->nullable();
+            $table->string("emp_pob")->nullable();
             $table->string("residence");
             $table->string("job");
-            $table->string("Work_days");
+            $table->string("rest_day")->default("none");
             $table->double("pay_rate");
-            $table->text("emp_desc");
-            $table->text("emp_pic_path");
+            $table->text("emp_desc")->nullable();
+            $table->text("emp_pic_path")->nullable();
             $table->timestamps();
         });
     }

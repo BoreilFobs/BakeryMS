@@ -110,7 +110,12 @@
                 <a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French  </span></a></div>
             </div>
             <!-- Log out               -->
-            <div class="list-inline-item logout"><a id="logout" href="{{ url("/logout")}}" class="nav-link">Logout <i class="icon-logout"></i></a></div>
+            <div class="list-inline-item logout">
+                <form action="{{url('/logout')}}" method="get">
+                    @csrf
+                    <button class="bg-transparent" id="logout" class="nav-link">Logout <i class="icon-logout"></i></button>
+                </form>
+            </div>
           </div>
         </div>
       </nav>

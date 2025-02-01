@@ -161,41 +161,57 @@
                 {{-- here is where my content enter..... --}}
               <div class="block">
                 <div class="title"><strong class="d-block">Enter the informations about the new employee </strong><span class="d-block"></span></div>
-                  <div class="block-body">
-                    <form>
+                  <div class="block-body position-relative">
+                     @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+
+                    <div class="content">
+                        <div
+                        class="alert alert-danger error"
+                        role="alert"
+                    >
+                        <strong>{{ $error }}</strong>
+                    </div>
+                    @endforeach
+
+                @endif
+
+
+                    <form method="post" action="{{url('employees/create')}}">
+                        @csrf
                         <div class="d-grid">
                           <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                   <label class="form-control-label">Employee's name</label>
-                                  <input type="text" placeholder="Employee's name" class="form-control">
+                                  <input type="text" name="emp_name" placeholder="Employee's name" class="form-control">
                                 </div>
                                 <div class="form-group">
                                   <label class="form-control-label">Date of birth</label>
-                                  <input type="date" placeholder="date 0f birth" class="form-control">
+                                  <input type="date" name="emp_dob" placeholder="date 0f birth" class="form-control">
                                 </div>
                                 <div class="form-group">
                                   <label class="form-control-label">Place of birth</label>
-                                  <input type="date" placeholder="Place of birth" class="form-control">
+                                  <input type="date" name="emp_pob" placeholder="Place of birth" class="form-control">
                                 </div>
                                 <div class="form-group">
                                   <label class="form-control-label">Employee's Residence</label>
-                                  <input type="text" placeholder="e.g Ngousso" class="form-control">
+                                  <input type="text" name="residence" placeholder="e.g Ngousso" class="form-control">
                                 </div>
                             </div>
                             <div class="col-md-6">
                               <div class="form-group">
                                   <label class="form-control-label">Employee's Job</label>
-                                  <input type="text" placeholder="job" class="form-control">
+                                  <input type="text" name="job" placeholder="job" class="form-control">
                                 </div><div class="form-group">
                                   <label class="form-control-label">Resting Day</label>
-                                  <input type="text" placeholder="resting day" class="form-control">
+                                  <input type="text" name="rest_day" placeholder="resting day" class="form-control">
                                 </div><div class="form-group">
                                   <label class="form-control-label">Employee's Pay rate</label>
-                                  <input type="number" placeholder="Pay" class="form-control">
+                                  <input type="number" name="pay_rate" placeholder="Pay" class="form-control">
                                 </div><div class="form-group">
                                   <label class="form-control-label">Employee's Picture</label>
-                                  <input type="email" placeholder="Email Address" class="form-control">
+                                  <input type="file" name="emp_pic" placeholder="Employee's picture" class="form-control">
                                 </div>
                             </div>
                             <div class="row">
@@ -205,7 +221,7 @@
                              </div>
                             </div>
                           </div>
-                          <input type="submit" name="submit" id="submit" class="btn btn-success mt-4">
+                          <button class="btn btn-success mt-4">Create</button>
                         </div>
                     </form>
                   </div>
