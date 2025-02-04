@@ -14,9 +14,8 @@ class Employee extends Model
         'emp_pob',
         'residence',
         'job',
-        'work_days',
         'pay_rate',
-        'emp_desk',
+        'experience',
         'emp_pic_path'
     ];
 }

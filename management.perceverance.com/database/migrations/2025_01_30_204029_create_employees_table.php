@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string("emp_pob")->nullable();
             $table->string("residence");
             $table->string("job");
-            $table->string("rest_day")->default("none");
             $table->double("pay_rate");
-            $table->text("emp_desc")->nullable();
+            $table->integer("experience");
             $table->text("emp_pic_path")->nullable();
             $table->timestamps();
         });

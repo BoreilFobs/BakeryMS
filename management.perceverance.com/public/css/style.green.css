@@ -21,6 +21,7 @@ Dark Admin Bootstrap Template by Bootstrapious.com
 }
 body {
     position: relative;
+    overflow-x: hidden;
 }
 
 section {

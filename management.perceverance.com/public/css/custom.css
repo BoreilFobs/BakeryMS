@@ -10,6 +10,18 @@
     animation: show-error 5s forwards;
     z-index: -1;
 }
+.success {
+    width: 50%;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+    background-color: rgba(9, 39, 4, 0.816);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    animation: show-error 5s forwards;
+    z-index: -1;
+    color: whitesmoke;
+}
 @keyframes show-error {
     0% {
         opacity: 0;
@@ -51,4 +63,32 @@
 }
 .order .item .in-process {
     background-color: orange;
+}
+.info {
+    font-size: 20px;
+    font-style: italic;
+    line-height: 35px;
+}
+.empshow .actions {
+    position: absolute;
+    right: 60px;
+    bottom: 170px;
+    gap: 15px;
+}
+.empshow .details {
+    position: relative;
+    left: -130px;
+}
+.offers .details b {
+    font-size: 26px;
+    font-family: cursive;
+    margin-left: 10px;
+}
+.offers .actions {
+    /* position: absolute;
+    right: 20px;
+    bottom: 20px; */
+    gap: 15px;
+    margin-top: 25px;
+    margin-bottom: 0px;
 }
