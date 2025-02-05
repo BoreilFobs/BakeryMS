@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class EmployeeController extends Controller
@@ -130,5 +131,8 @@ class EmployeeController extends Controller
         $employee->delete();
         return redirect('/employees')->with('success', 'Employee deleted successfully');
     }
-
+     public function logout(){
+        Auth::logout();
+        return redirect('/login');
+    }
 }

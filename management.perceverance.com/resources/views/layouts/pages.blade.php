@@ -85,7 +85,7 @@
                 <a rel="nofollow" href="#" class="dropdown-item"> <img src="{{asset('img/flags/16/FR.png')}}" alt="English" class="mr-2"><span>French  </span></a></div>
             </div>
             <!-- Log out               -->
-            <div class="list-inline-item logout"><a id="logout" href="{{ url("/")}}" class="nav-link">Logout <i class="fa-solid fa-right-from-bracket"></i></a></div>
+            <div class="list-inline-item logout"><a id="logout" href="{{ url("/lo-gout")}}" class="nav-link">Logout <i class="fa-solid fa-right-from-bracket"></i></a></div>
           </div>
         </div>
       </nav>
