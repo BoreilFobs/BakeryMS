@@ -19,6 +19,9 @@ Dark Admin Bootstrap Template by Bootstrapious.com
     --brown-2: #b88b4a;
     --brown-3: #ddca7d;
 }
+.a {
+    color: #3923109e;
+}
 body {
     position: relative;
     overflow-x: hidden;
