@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMW Cars & Parts</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+      :root {
+        --primary-color: rgba(0, 51, 102, 0.8);
+        --secondary-color: rgba(245, 245, 240, 0.8);
+        --accent-color: rgba(74, 144, 226, 0.8);
+        --text-color: #333;
+        --background-color: rgba(255, 255, 255, 0.8);
+      }
+
+      .dark-theme {
+        --primary-color: rgba(26, 26, 26, 0.8);
+        --secondary-color: rgba(51, 51, 51, 0.8);
+        --accent-color: rgba(74, 144, 226, 0.8);
+        --text-color: #fff;
+        --background-color: rgba(18, 18, 18, 0.8);
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-image: url("https://images.unsplash.com/photo-1555215695-3004980ad54e");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: var(--text-color);
+      }
+
+      .header {
+        background-color: var(--primary-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .account-icon {
+        color: var(--secondary-color);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .theme-toggle {
+        background: var(--accent-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: none;
+        padding: 0.5rem 1rem;
+        color: white;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .main-content {
+        padding: 2rem;
+      }
+
+      .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .product-card {
+        background-color: var(--secondary-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      .product-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 4px;
+      }
+
+      .chat-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: var(--accent-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: white;
+        padding: 1.2rem;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        animation: pulse 2s infinite;
+      }
+
+      .chat-widget:hover {
+        transform: scale(1.1);
+        background-color: var(--primary-color);
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(74, 144, 226, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 10px rgba(74, 144, 226, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(74, 144, 226, 0);
+        }
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+      }
+
+      .modal-content {
+        background-color: var(--background-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        margin: 15% auto;
+        padding: 40px;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      #loginForm {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      #loginForm input {
+        padding: 12px;
+        border: 2px solid var(--accent-color);
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      #loginForm input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 5px rgba(74, 144, 226, 0.3);
+      }
+
+      #loginForm button {
+        background-color: var(--accent-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: white;
+        padding: 8px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        width: 80px;
+        height: 30px;
+        margin: 0 auto;
+      }
+
+      #loginForm button:hover {
+        background-color: var(--primary-color);
+      }
+
+      #loginForm.incomplete button {
+        transition: transform 0.2s ease-out;
+      }
+
+      #loginForm.incomplete button:hover {
+        transform: translate(
+          calc(var(--mouse-x) * -150px),
+          calc(var(--mouse-y) * -150px)
+        );
+      }
+
+      #loginForm p {
+        text-align: center;
+        margin-top: 15px;
+      }
+
+      #loginForm a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      #loginForm a:hover {
+        text-decoration: underline;
+      }
+
+      .locations-map {
+        width: 100%;
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 1rem;
+        background-color: var(--background-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border-radius: 8px;
+      }
+
+      #map {
+        width: 100%;
+        height: 500px;
+        border-radius: 8px;
+      }
+
+      .locations-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .location-card {
+        background-color: var(--secondary-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+
+      section {
+        background-color: var(--background-color);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        padding: 2rem;
+        margin: 2rem 0;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+      }
+
+      #about p {
+        line-height: 1.8;
+        font-size: 1.1rem;
+        padding-left: 3rem;
+        padding-right: 3rem;
+        text-align: center;
+      }
+
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+      }
+
+      .service-card {
+        background-color: var(--secondary-color);
+        padding: 2rem;
+        border-radius: 8px;
+        text-align: center;
+        transition: transform 0.3s ease;
+      }
+
+      .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .service-card i {
+        font-size: 2.5rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+      }
+
+      .service-card h3 {
+        margin: 1rem 0;
+        color: var(--text-color);
+      }
+
+      .service-card p {
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+
+      /* New Chat Styles */
+      #chatModal .modal-content {
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      #chatMessages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .chat-message {
+        margin: 10px 0;
+        padding: 10px 15px;
+        border-radius: 15px;
+        max-width: 80%;
+        animation: messageSlide 0.3s ease-out;
+      }
+
+      .chat-message.user {
+        background: var(--accent-color);
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 5px;
+      }
+
+      .chat-message.support {
+        background: var(--secondary-color);
+        color: var(--text-color);
+        margin-right: auto;
+        border-bottom-left-radius: 5px;
+      }
+
+      @keyframes messageSlide {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .chat-input-container {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+      }
+
+      #messageInput {
+        flex: 1;
+        padding: 12px;
+        border: 2px solid var(--accent-color);
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--text-color);
+        transition: all 0.3s ease;
+      }
+
+      #messageInput:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+      }
+
+      .chat-send-btn {
+        background: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 12px 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .chat-send-btn:hover {
+        background: var(--primary-color);
+        transform: scale(1.05);
+      }
+
+      .typing-indicator {
+        display: none;
+        padding: 10px;
+        color: var(--text-color);
+      }
+
+      .typing-indicator span {
+        animation: typing 1s infinite;
+      }
+
+      @keyframes typing {
+        0%,
+        100% {
+          opacity: 0.3;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="account-icon">
+        <i class="fas fa-user" onclick="toggleLoginModal()"></i>
+      </div>
+      <h1 style="color: var(--secondary-color)">BMW Cars & Parts</h1>
+      <button class="theme-toggle" onclick="toggleTheme()">Toggle Theme</button>
+    </div>
+
+    <div class="main-content">
+      <section id="about">
+        <h2>About Us</h2>
+        <p>
+          Welcome to BMW Cars & Parts, your premier destination for authentic
+          BMW vehicles and genuine spare parts. With over 20 years of
+          experience, we provide top-quality BMW products and exceptional
+          customer service. Our facility is staffed with certified BMW
+          specialists and master technicians who bring decades of combined
+          experience in diagnosing, repairing, and maintaining BMW vehicles.
+        </p>
+        <p>
+          Our team of expert car specialists is available to handle everything
+          from routine maintenance to complex repairs. Each technician undergoes
+          regular training to stay current with the latest BMW technologies and
+          repair techniques. Whether your vehicle needs a simple tune-up or
+          major repairs, our specialists have the expertise and state-of-the-art
+          equipment to get your BMW back on the road in optimal condition.
+        </p>
+        <p>
+          We take pride in offering comprehensive solutions under one roof -
+          from selling premium BMW vehicles to providing genuine parts and
+          professional repair services. Our commitment to excellence and
+          customer satisfaction has made us the trusted choice for BMW owners
+          across the region.
+        </p>
+      </section>
+
+      <section id="services">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <i class="fas fa-car"></i>
+            <h3>New and Pre-owned BMW Sales</h3>
+            <p>
+              Browse our extensive collection of the latest BMW models and
+              certified pre-owned vehicles. Each pre-owned vehicle undergoes a
+              rigorous 150-point inspection to ensure the highest quality
+              standards.
+            </p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-cogs"></i>
+            <h3>Genuine BMW Parts Supply</h3>
+            <p>
+              Access our comprehensive inventory of authentic BMW parts, from
+              engine components to body parts. We source directly from BMW
+              manufacturing to guarantee authenticity and reliability.
+            </p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-wrench"></i>
+            <h3>Professional Installation</h3>
+            <p>
+              Our certified technicians provide expert installation services
+              using state-of-the-art equipment and following BMW's strict
+              guidelines to ensure optimal performance.
+            </p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-comments"></i>
+            <h3>Expert Consultation</h3>
+            <p>
+              Receive personalized advice from our BMW specialists who can help
+              you choose the right parts or vehicle that best suits your needs
+              and preferences.
+            </p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-shipping-fast"></i>
+            <h3>International Shipping</h3>
+            <p>
+              We offer worldwide shipping services with tracking and insurance
+              options to ensure your parts arrive safely and on time, wherever
+              you are.
+            </p>
+          </div>
+        </div>
+
+        <div class="locations-map">
+          <h2>Our Global Locations</h2>
+          <div id="map"></div>
+
+          <div class="locations-list">
+            <div class="location-card">
+              <h3>New York</h3>
+              <p>123 Manhattan Ave, NY 10001</p>
+              <p>Tel: (212) 555-0123</p>
+            </div>
+            <div class="location-card">
+              <h3>Chicago</h3>
+              <p>456 Michigan Ave, IL 60601</p>
+              <p>Tel: (312) 555-0124</p>
+            </div>
+            <div class="location-card">
+              <h3>Los Angeles</h3>
+              <p>789 Beverly Blvd, CA 90048</p>
+              <p>Tel: (323) 555-0125</p>
+            </div>
+            <div class="location-card">
+              <h3>Miami</h3>
+              <p>321 Ocean Drive, FL 33139</p>
+              <p>Tel: (305) 555-0126</p>
+              <p>Hours: Mon-Sat 9am-6pm</p>
+            </div>
+            <div class="location-card">
+              <h3>Austin</h3>
+              <p>654 Congress Ave, TX 78701</p>
+              <p>Tel: (512) 555-0127</p>
+            </div>
+            <div class="location-card">
+              <h3>London</h3>
+              <p>987 Oxford Street, London W1D 1BS</p>
+              <p>Tel: +44 20 7123 4567</p>
+              <p>Hours: Mon-Fri 8am-7pm, Sat 9am-5pm</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="products">
+        <h2>Featured Products</h2>
+        <div class="products-grid">
+          <div class="product-card">
+            <img
+              src="https://images.unsplash.com/photo-1555215695-3004980ad54e"
+              alt="BMW M4"
+            />
+            <h3>BMW M4 Competition</h3>
+            <p>Starting from $74,900</p>
+          </div>
+          <div class="product-card">
+            <img
+              src="https://images.unsplash.com/photo-1617814076668-49a71acts=12"
+              alt="BMW X5"
+            />
+            <h3>BMW X5 xDrive</h3>
+            <p>Starting from $62,900</p>
+          </div>
+          <div class="product-card">
+            <img
+              src="https://example.com/bmw-parts.jpg"
+              alt="BMW Engine Parts"
+            />
+            <h3>Original BMW Engine Parts</h3>
+            <p>Starting from $299</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="chat-widget" onclick="toggleChat()">
+      <i class="fas fa-comments"></i>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <h2
+          style="
+            text-align: center;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+          "
+        >
+          Welcome Back
+        </h2>
+        <form id="loginForm" class="incomplete">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            required
+            onchange="checkForm()"
+          />
+          <input
+            type="password"
+            placeholder="Enter your password"
+            required
+            onchange="checkForm()"
+          />
+          <button type="submit">Sign In</button>
+          <p>
+            New to BMW Cars & Parts?
+            <a href="#" onclick="showRegister()">Create an account</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal">
+      <div class="modal-content">
+        <h2 style="margin-bottom: 20px">Customer Support</h2>
+        <div id="chatMessages"></div>
+        <div class="typing-indicator">
+          Support is typing<span>.</span><span>.</span><span>.</span>
+        </div>
+        <div class="chat-input-container">
+          <input
+            type="text"
+            id="messageInput"
+            placeholder="Type your message..."
+            onkeypress="handleKeyPress(event)"
+          />
+          <button class="chat-send-btn" onclick="sendMessage()">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Initialize the map
+      const map = L.map("map").setView([40, -95], 4);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
+
+      // Add markers for each location
+      const locations = [
+        { name: "New York", coords: [40.7128, -74.006] },
+        { name: "Chicago", coords: [41.8781, -87.6298] },
+        { name: "Los Angeles", coords: [34.0522, -118.2437] },
+        { name: "Miami", coords: [25.7617, -80.1918] },
+        { name: "Austin", coords: [30.2672, -97.7431] },
+        { name: "London", coords: [51.5074, -0.1278] },
+      ];
+
+      locations.forEach((location) => {
+        L.marker(location.coords).bindPopup(location.name).addTo(map);
+      });
+
+      function toggleTheme() {
+        document.body.classList.toggle("dark-theme");
+      }
+
+      function toggleLoginModal() {
+        document.getElementById("loginModal").style.display =
+          document.getElementById("loginModal").style.display === "block"
+            ? "none"
+            : "block";
+      }
+
+      function toggleChat() {
+        document.getElementById("chatModal").style.display =
+          document.getElementById("chatModal").style.display === "block"
+            ? "none"
+            : "block";
+        if (document.getElementById("chatModal").style.display === "block") {
+          document.getElementById("messageInput").focus();
+        }
+      }
+
+      function showRegister() {
+        // Implementation for registration form
+        alert("Registration functionality to be implemented");
+      }
+
+      function handleKeyPress(event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      }
+
+      function sendMessage() {
+        const messageInput = document.getElementById("messageInput");
+        const message = messageInput.value;
+        if (message.trim()) {
+          const chatMessages = document.getElementById("chatMessages");
+          chatMessages.innerHTML += `
+            <div class="chat-message user">
+              ${message}
+            </div>
+          `;
+          messageInput.value = "";
+
+          // Show typing indicator
+          document.querySelector(".typing-indicator").style.display = "block";
+
+          // Simulate automated response
+          setTimeout(() => {
+            document.querySelector(".typing-indicator").style.display = "none";
+            chatMessages.innerHTML += `
+              <div class="chat-message support">
+                Thank you for your message. An agent will respond shortly.
+              </div>
+            `;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          }, 2000);
+
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      }
+
+      // Close modals when clicking outside
+      window.onclick = function (event) {
+        if (event.target.className === "modal") {
+          event.target.style.display = "none";
+        }
+      };
+
+      // Check if form is complete
+      function checkForm() {
+        const form = document.getElementById("loginForm");
+        const inputs = form.querySelectorAll("input");
+        let isComplete = true;
+
+        inputs.forEach((input) => {
+          if (!input.value) {
+            isComplete = false;
+          }
+        });
+
+        if (isComplete) {
+          form.classList.remove("incomplete");
+        } else {
+          form.classList.add("incomplete");
+        }
+      }
+
+      // Track mouse position relative to button
+      document.addEventListener("mousemove", (e) => {
+        const loginButton = document.querySelector("#loginForm button");
+        if (loginButton) {
+          const rect = loginButton.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+          loginButton.style.setProperty("--mouse-x", x);
+          loginButton.style.setProperty("--mouse-y", y);
+        }
+      });
+    </script>
+  </body>
+</html>

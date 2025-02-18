@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\IngredientsController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
@@ -38,3 +40,10 @@ Route::get('/orders/{id}/details', [OrderController::class, 'show']);
 Route::post('/orders/create', [OrderController::class, 'store']);
 Route::get('/orders/{id}/edit', [OrderController::class, 'update']);
 Route::get('/orders/{id}/delete', [OrderController::class, 'delete']);
+
+// ingredient api
+
+Route::get('/ingredients', [IngredientsController::class, 'index']);
+// Auth routes
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/register', [AuthController::class, 'register']);

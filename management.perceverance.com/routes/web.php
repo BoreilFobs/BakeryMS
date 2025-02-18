@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\CompositionController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FormulaController;
+use App\Http\Controllers\IngredientsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
@@ -53,6 +56,20 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/orders/{id}/details', [OrderController::class, 'show']);
+
+    // ROUTING FOR COMPOSITION
+
+    Route::get('/composition', [CompositionController::class, 'index']);
+    Route::get('/orders/edit', [CompositionController::class, 'update']);
+
+    // routing for ingredient
+
+    Route::get('/ingredient/form', [IngredientsController::class, 'form']);
+    Route::get('/ingredients', [IngredientsController::class, 'index']);
+    Route::post('/ingredients/create', [IngredientsController::class, 'store']);
+    Route::get('/ingredients/{id}/edit', [IngredientsController::class, 'formEdit']);
+    Route::put('/ingredients/{id}/editData', [IngredientsController::class, 'update']);
+    Route::get('/ingredients/{id}/delete', [IngredientsController::class, 'delete']);
 
 
 });

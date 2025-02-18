@@ -23,7 +23,7 @@
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
     <!-- Favicon-->
-    <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
+    <link rel="shortcut icon" href="{{asset('img/logo.png')}}">
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -101,23 +101,23 @@
             <p>Directeur</p>
           </div>
         </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+        <!-- Sidebar Navidation Menus-->
         <ul class="list-unstyled">
                 <li class="{{ Str::contains(request()->url(), '/home') ? 'active' : '' }}"><a href="{{url('/home')}}"> <i class="fa-solid fa-house-chimney"></i>Home </a></li>
-                <li class="{{ Str::contains(request()->url(), '/inventory') ? 'active' : '' }}"><a href="{{url('/inventory')}}"><i class="fa-solid fa-warehouse"></i>Inventory </a></li>
+                 <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa-solid fa-warehouse"></i>Inventory</a>
+                  <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                    <li><a href="{{url("/composition")}}">today's composition</a></li>
+                    <li><a href="{{url("/ingredients")}}">production ingredients</a></li>
+                    <li><a href="{{url("")}}">Page</a></li>
+                  </ul>
+                </li>
                 <li class="{{ Str::contains(request()->url(), '/offers') ? 'active' : '' }}"><a href="{{ url('/offers') }}"> <i class="fa-solid fa-border-none"></i>Offers </a></li>
                 <li class="{{ Str::contains(request()->url(), '/employees') ? 'active' : '' }}"><a href="{{url('/employees')}}"> <i class="fa-solid fa-address-card"></i>Employees </a></li>
                 <li class="{{ Str::contains(request()->url(), '/customer') ? 'active' : '' }}"><a href="{{url('/customers')}}"> <i class="fa-solid fa-person-walking-luggage"></i>Customers </a></li>
                 <li class="{{ Str::contains(request()->url(), '/orders') ? 'active' : '' }}"><a href="{{ url('/orders')}}"> <i class="fa-solid fa-truck"></i>Orders </a></li>
 {{-- example dropdown code --}}
 
-                {{-- <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Example dropdown </a>
-                  <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                    <li><a href="#">Page</a></li>
-                    <li><a href="#">Page</a></li>
-                    <li><a href="#">Page</a></li>
-                  </ul>
-                </li> --}}
+
 
 
       </nav>
@@ -129,6 +129,8 @@
                 <a href="{{url('/employees/form')}}" class="btn btn-success">ADD <i class="fa fa-plus"></i></a>
             @elseif(Str::contains(request()->url(), '/offers') && !Str::contains(request()->url(), '/profile'))
                 <a href="{{url('/offers/form')}}" class="btn btn-success">ADD <i class="fa fa-plus"></i></a>
+            @elseif(Str::contains(request()->url(), '/ingredients') && !Str::contains(request()->url(), '/profile'))
+                <a href="{{url('/ingredient/form')}}" class="btn btn-success">ADD<i class="fa fa-plus"></i></a>
             @endif
           </div>
         </div>

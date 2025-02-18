@@ -8,24 +8,80 @@ import {
   ImageBackground,
 } from "react-native";
 import React from "react";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import logo from "../assets/images/logo.png";
 import background from "../assets/images/login-bg.jpg";
+import axios from "axios";
 
 const index = () => {
+  const [name, setName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [nameError, setNameError] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState("");
+  const [generalError, setGeneralError] = React.useState("");
+
+  const handleLogin = async () => {
+    // Reset errors
+    setNameError("");
+    setPasswordError("");
+    setGeneralError("");
+
+    // Validate inputs
+    if (!name) {
+      setNameError("Name is required");
+      return;
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/auth/login",
+        {
+          name,
+          password,
+        }
+      );
+
+      if (response.data.status === "success") {
+        router.replace("/(tabs)/home");
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 401) {
+          setGeneralError("Invalid credentials");
+        } else {
+          setGeneralError(error.response.data.message || "Login failed");
+        }
+      } else {
+        setGeneralError("Network error. Please try again.");
+      }
+    }
+  };
+
   return (
     <ImageBackground source={background} style={styles.background}>
       <View style={styles.main}>
         <Text style={styles.formHeader}>login</Text>
         <Image style={styles.image} source={logo}></Image>
         <View style={styles.form}>
+          {generalError ? (
+            <Text style={styles.errorText}>{generalError}</Text>
+          ) : null}
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Phone</Text>
+            <Text style={styles.label}>Name</Text>
             <TextInput
               style={styles.input}
-              placeholder="XXXXXXXXX"
+              placeholder="Your Name"
               placeholderTextColor={"grey"}
+              value={name}
+              onChangeText={setName}
             ></TextInput>
+            {nameError ? (
+              <Text style={styles.errorText}>{nameError}</Text>
+            ) : null}
           </View>
 
           <View style={styles.formGroup}>
@@ -37,12 +93,15 @@ const index = () => {
               secureTextEntry={true}
               autoCapitalize="none"
               autoComplete="off"
+              value={password}
+              onChangeText={setPassword}
             ></TextInput>
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
           </View>
-          <TouchableOpacity style={styles.button}>
-            <Link href="/">
-              <Text style={styles.link}>Login</Text>
-            </Link>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.link}>Login</Text>
           </TouchableOpacity>
           <View style={styles.signup}>
             <Text style={styles.text}>
@@ -134,6 +193,9 @@ const styles = StyleSheet.create({
     // backgroundColor: "red",
     width: "100%",
     alignContent: "",
+  },
+  errorText: {
+    color: "red",
   },
 });
 export default index;

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('offer_id')->references('id')->on('offers');
             $table->integer('quantity');
             $table->timestamp('time')->default(now());
-            $table->string('status')->default('in-process');
+            $table->string('status')->default('sent');
             $table->timestamps();
         });
     }

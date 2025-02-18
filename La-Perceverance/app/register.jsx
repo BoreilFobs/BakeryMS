@@ -6,26 +6,95 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  Button,
 } from "react-native";
 import React from "react";
 import logo from "../assets/images/logo.png";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import background from "../assets/images/login-bg.jpg";
+import axios from "axios";
 
 const register = () => {
+  const [name, setName] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [nameError, setNameError] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = React.useState("");
+  const [generalError, setGeneralError] = React.useState("");
+
+  const handleRegister = async () => {
+    // Reset errors
+    setNameError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+    setGeneralError("");
+
+    // Validate inputs
+    if (!name) {
+      setNameError("Name is required");
+      return;
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      return;
+    }
+    if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      return;
+    }
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/auth/register",
+        {
+          name,
+          password,
+        }
+      );
+
+      if (response.data.status === "success") {
+        router.replace("/");
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 409) {
+          setNameError("Username already exists");
+        } else {
+          setGeneralError(error.response.data.message || "Registration failed");
+        }
+      } else {
+        setGeneralError("Network error. Please try again.");
+      }
+    }
+  };
+
   return (
     <ImageBackground source={background} style={styles.background}>
       <View style={styles.main}>
         <Text style={styles.formHeader}>Register</Text>
         <Image style={styles.image} source={logo}></Image>
         <View style={styles.form}>
+          {generalError ? (
+            <Text style={styles.errorText}>{generalError}</Text>
+          ) : null}
+
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Phone</Text>
+            <Text style={styles.label}>Name</Text>
             <TextInput
               style={styles.input}
-              placeholder="XXXXXXXXX"
+              placeholder="Your Name"
               placeholderTextColor={"grey"}
+              value={name}
+              onChangeText={setName}
             ></TextInput>
+            {nameError ? (
+              <Text style={styles.errorText}>{nameError}</Text>
+            ) : null}
           </View>
 
           <View style={styles.formGroup}>
@@ -37,7 +106,12 @@ const register = () => {
               secureTextEntry={true}
               autoCapitalize="none"
               autoComplete="off"
+              value={password}
+              onChangeText={setPassword}
             ></TextInput>
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
           </View>
 
           <View style={styles.formGroup}>
@@ -45,20 +119,20 @@ const register = () => {
             <TextInput
               style={styles.input}
               textContentType="password"
-              placeholder="Conform your password"
+              placeholder="Confirm your password"
               placeholderTextColor={"grey"}
               secureTextEntry={true}
               autoCapitalize="none"
               autoComplete="off"
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
             ></TextInput>
+            {confirmPasswordError ? (
+              <Text style={styles.errorText}>{confirmPasswordError}</Text>
+            ) : null}
           </View>
-          <TouchableOpacity style={styles.button}>
-            <Link
-              href="/"
-              style={{ alignItems: "center", justifyContent: "center" }}
-            >
-              <Text style={styles.link}>Register</Text>
-            </Link>
+          <TouchableOpacity style={styles.button} onPress={handleRegister}>
+            <Text style={styles.link}>Register</Text>
           </TouchableOpacity>
           <View style={styles.signup}>
             <Text style={styles.text}>
@@ -147,9 +221,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   signup: {
-    // backgroundColor: "red",
     width: "100%",
     alignContent: "",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 2,
   },
 });
 export default register;
