@@ -50,7 +50,7 @@ const register = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/auth/register",
+        "http://192.168.43.169:8000/api/auth/register",
         {
           name,
           password,
@@ -74,7 +74,11 @@ const register = () => {
   };
 
   return (
-    <ImageBackground source={background} style={styles.background}>
+    <ImageBackground
+      source={background}
+      style={styles.background}
+      resizeMode="cover"
+    >
       <View style={styles.main}>
         <Text style={styles.formHeader}>Register</Text>
         <Image style={styles.image} source={logo}></Image>
@@ -88,7 +92,7 @@ const register = () => {
             <TextInput
               style={styles.input}
               placeholder="Your Name"
-              placeholderTextColor={"grey"}
+              placeholderTextColor={"#666"}
               value={name}
               onChangeText={setName}
             ></TextInput>
@@ -102,7 +106,7 @@ const register = () => {
             <TextInput
               style={styles.input}
               placeholder="Enter your password"
-              placeholderTextColor={"grey"}
+              placeholderTextColor={"#666"}
               secureTextEntry={true}
               autoCapitalize="none"
               autoComplete="off"
@@ -120,7 +124,7 @@ const register = () => {
               style={styles.input}
               textContentType="password"
               placeholder="Confirm your password"
-              placeholderTextColor={"grey"}
+              placeholderTextColor={"#666"}
               secureTextEntry={true}
               autoCapitalize="none"
               autoComplete="off"
@@ -131,13 +135,15 @@ const register = () => {
               <Text style={styles.errorText}>{confirmPasswordError}</Text>
             ) : null}
           </View>
-          <TouchableOpacity style={styles.button} onPress={handleRegister}>
-            <Text style={styles.link}>Register</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+          </View>
           <View style={styles.signup}>
             <Text style={styles.text}>
-              already have an account?{" "}
-              <Link href="/" style={{ color: "blue" }}>
+              Already have an account?{" "}
+              <Link href="/" style={styles.loginLink}>
                 Login
               </Link>
             </Text>
@@ -151,83 +157,115 @@ const register = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
+    width: "100%",
+    height: "100%",
   },
   main: {
     padding: 20,
     flex: 1,
-    gap: 0,
     position: "relative",
-    backgroundColor: "#472e189e",
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
     justifyContent: "center",
     alignItems: "center",
   },
   text: {
-    color: "white",
+    color: "#fff",
+    fontSize: 16,
   },
   form: {
     display: "flex",
-    gap: 17,
-    paddingVertical: 40,
+    gap: 15,
+    paddingVertical: 30,
     paddingHorizontal: 20,
     width: "100%",
+    maxWidth: 400,
     alignContent: "center",
     justifyContent: "center",
     position: "relative",
-    top: -200,
+    top: -80,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
   },
   input: {
     width: "100%",
     outlineWidth: 0,
     borderWidth: 0,
-    paddingHorizontal: 10,
-    padding: 7,
-    backgroundColor: "#e7ddb4",
-    marginVertical: 10,
+    paddingHorizontal: 15,
+    padding: 12,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    marginVertical: 8,
     borderRadius: 10,
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "500",
+    color: "#333",
   },
   label: {
-    color: "#b88b4a",
-    fontSize: 17,
+    color: "#fff",
+    fontSize: 16,
     fontWeight: "600",
+    marginBottom: 4,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    marginTop: 10,
   },
   button: {
-    padding: 7,
-    paddingHorizontal: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 30,
     backgroundColor: "#b88b4a",
-    maxWidth: 80,
-    borderRadius: 18,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   formHeader: {
-    fontSize: 50,
+    fontSize: 38,
     position: "absolute",
-    top: 10,
-    left: 20,
+    top: 40,
     fontWeight: "bold",
-    fontFamily: "gabriola",
-    color: "#b88b4a",
+    color: "#fff",
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4,
   },
   image: {
-    transform: "scale(0.4)",
-    marginTop: 130,
+    width: 180,
+    height: 180,
+    marginTop: 80,
+    marginBottom: -30,
   },
-  link: {
-    color: "#242331",
-    fontSize: 15,
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
     fontWeight: "700",
     textAlign: "center",
-    alignItems: "center",
-    justifyContent: "center",
   },
   signup: {
     width: "100%",
-    alignContent: "",
+    alignItems: "center",
+    marginTop: 20,
   },
   errorText: {
-    color: "red",
-    fontSize: 12,
-    marginTop: 2,
+    color: "#ff6b6b",
+    fontSize: 14,
+    marginTop: 4,
+  },
+  loginLink: {
+    color: "#b88b4a",
+    textDecorationLine: "underline",
+    fontWeight: "bold",
   },
 });
 export default register;

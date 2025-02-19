@@ -6,11 +6,14 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
-const Home = () => {
+const Orders = () => {
+  const [quantities, setQuantities] = useState<Record<number, number>>({});
+
   const products = [
     {
       id: 1,
@@ -38,13 +41,40 @@ const Home = () => {
     },
   ];
 
+  const handleLogout = () => {
+    router.replace("/");
+  };
+
+  const handleEdit = (productId: number) => {
+    router.push(`/form?id=${productId}&edit=true`);
+  };
+
+  const getTotalCost = () => {
+    return products.reduce((total, product) => {
+      return (
+        total +
+        product.price * (quantities[product.id as keyof typeof quantities] || 0)
+      );
+    }, 0);
+  };
+
   return (
     <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.totalCost}>
+          Total: ${getTotalCost().toFixed(2)}
+        </Text>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Ionicons name="log-out-outline" size={24} color="#FFF3E0" />
+        </TouchableOpacity>
+      </View>
+
       <BlurView intensity={20} style={styles.itemCountContainer} tint="light">
         <Text style={styles.itemCount}>
           {products.length} Item{products.length !== 1 ? "s" : ""}
         </Text>
       </BlurView>
+
       {products.map((product) => (
         <BlurView
           key={product.id}
@@ -64,14 +94,25 @@ const Home = () => {
               <Text style={styles.productPrice}>
                 ${product.price.toFixed(2)}
               </Text>
+              <Text style={styles.quantity}>
+                Quantity: {quantities[product.id] || 0}
+              </Text>
+              <Text style={styles.itemTotal}>
+                Total: $
+                {((quantities[product.id] || 0) * product.price).toFixed(2)}
+              </Text>
             </View>
-
-            <TouchableOpacity
-              style={styles.orderButton}
-              onPress={() => router.push(`/form?id=${product.id}`)}
-            >
-              <Text style={styles.orderButtonText}>Order Now</Text>
-            </TouchableOpacity>
+            <View style={styles.actionButtons}>
+              <TouchableOpacity
+                style={styles.actionButton}
+                onPress={() => handleEdit(product.id)}
+              >
+                <Ionicons name="create-outline" size={24} color="#3E2723" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.actionButton}>
+                <Ionicons name="trash-outline" size={24} color="#3E2723" />
+              </TouchableOpacity>
+            </View>
           </View>
         </BlurView>
       ))}
@@ -83,6 +124,27 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E6D5C7",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+    backgroundColor: "rgba(62, 39, 35, 0.9)",
+  },
+  totalCost: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#FFF3E0",
+  },
+  logoutButton: {
+    backgroundColor: "#b88b4a",
+    padding: 8,
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
   },
   itemCountContainer: {
     margin: 16,
@@ -134,19 +196,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#5D4037",
     fontWeight: "600",
+    marginBottom: 8,
   },
-  orderButton: {
-    backgroundColor: "rgba(62, 39, 35, 0.9)",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 25,
+  quantity: {
+    fontSize: 18,
+    color: "#3E2723",
+    marginBottom: 8,
+  },
+  itemTotal: {
+    fontSize: 16,
+    color: "#5D4037",
+    fontWeight: "600",
+  },
+  actionButtons: {
+    flexDirection: "row",
     alignItems: "center",
   },
-  orderButtonText: {
-    color: "#FFF3E0",
-    fontSize: 16,
-    fontWeight: "bold",
+  actionButton: {
+    padding: 8,
+    marginLeft: 8,
   },
 });
 
-export default Home;
+export default Orders;

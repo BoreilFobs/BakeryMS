@@ -14,21 +14,23 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: "#E6D5C7",
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
-            // Use a transparent background on iOS to show the blur effect
+            backgroundColor: "#3E2723",
             position: "absolute",
           },
-          default: {},
+          default: {
+            backgroundColor: "#3E2723",
+          },
         }),
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
@@ -37,14 +39,23 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="orders"
         options={{
-          title: "Explore",
+          title: "Orders",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="cart.fill" color={color} />
+          ),
+        }}
+      />
+      {/* <Tabs.Screen
+        name="Orders"
+        options={{
+          title: "Orders",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="paperplane.fill" color={color} />
           ),
         }}
-      />
+      /> */}
     </Tabs>
   );
 }
