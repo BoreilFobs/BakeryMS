@@ -32,20 +32,40 @@ class OrderController extends Controller
     }
 
     public function store(Request $request){
+        try {
+            $request->validate([
+                'cust_id' => 'required|numeric',
+                'offer_id' => 'required|numeric',
+                'quantity' => 'required|numeric',
+                'time' => 'required|date'
+            ]);
 
-         $request->validate([
-            'cust_id' => 'required|numeric',
-            'offer_id' => 'required|numeric',
-            'quantity' => 'required|numeric',
-        ]);
-
-           $order =  Order::create([
+            $order = Order::create([
                 'cust_id' => $request->cust_id,
                 'offer_id' => $request->offer_id,
                 'quantity' => $request->quantity,
+                'time' => $request->time,
             ]);
 
-        return response()->json(['message', 'Order Created Successfully!'], $order);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Order Created Successfully!',
+                'data' => $order
+            ], 201);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to create order',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
 

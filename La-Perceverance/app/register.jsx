@@ -18,9 +18,11 @@ const register = () => {
   const [name, setName] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [phone, setPhone] = React.useState("");
   const [nameError, setNameError] = React.useState("");
   const [passwordError, setPasswordError] = React.useState("");
   const [confirmPasswordError, setConfirmPasswordError] = React.useState("");
+  const [phoneError, setPhoneError] = React.useState("");
   const [generalError, setGeneralError] = React.useState("");
 
   const handleRegister = async () => {
@@ -28,6 +30,7 @@ const register = () => {
     setNameError("");
     setPasswordError("");
     setConfirmPasswordError("");
+    setPhoneError("");
     setGeneralError("");
 
     // Validate inputs
@@ -47,6 +50,14 @@ const register = () => {
       setConfirmPasswordError("Passwords do not match");
       return;
     }
+    if (!phone) {
+      setPhoneError("Phone number is required");
+      return;
+    }
+    if (!/^\d{9}$/.test(phone)) {
+      setPhoneError("Please enter a valid 9-digit phone number");
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -54,6 +65,7 @@ const register = () => {
         {
           name,
           password,
+          phone,
         }
       );
 
@@ -98,6 +110,22 @@ const register = () => {
             ></TextInput>
             {nameError ? (
               <Text style={styles.errorText}>{nameError}</Text>
+            ) : null}
+          </View>
+
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>Phone</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your phone number"
+              placeholderTextColor={"#666"}
+              keyboardType="numeric"
+              value={phone}
+              onChangeText={setPhone}
+              maxLength={9}
+            ></TextInput>
+            {phoneError ? (
+              <Text style={styles.errorText}>{phoneError}</Text>
             ) : null}
           </View>
 

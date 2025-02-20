@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,20 +15,21 @@ class AuthController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
-            'password' => 'required|string|min:6'
+            'password' => 'required|string|min:6',
+            'phone' => 'required|string|min:9|max:9'
         ]);
 
         // Check if user with same name already exists
-        if (User::where('name', $validatedData['name'])->exists()) {
+        if (Customer::where('name', $validatedData['name'])->exists()) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'A user with this name already exists. Please choose a different name.'
             ], 400);
         }
-
-        $user = User::create([
+        $user = Customer::create([
             'name' => $validatedData['name'],
-            'password' => Hash::make($validatedData['password'])
+            'password' => Hash::make($validatedData['password']),
+            'phone' => $validatedData['phone']
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
@@ -46,14 +48,15 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        if (!Auth::attempt($validatedData)) {
+        $user = Customer::where('name', $validatedData['name'])->first();
+
+        if (!$user || !Hash::check($validatedData['password'], $user->password)) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid credentials'
             ], 401);
         }
 
-        $user = User::where('name', $validatedData['name'])->firstOrFail();
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([

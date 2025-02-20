@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('cust_name');
+            $table->string('name');
+            $table->string('password');
             $table->integer('num_orders')->default(0);
             $table->string('cust_pic_path')->default('/storage/cust_profile_pics/defaultPic.jpg');
+            $table->string('phone');
             $table->timestamps();
         });
     }

@@ -12,6 +12,8 @@ import logo from "../assets/images/logo.png";
 import { Link, router } from "expo-router";
 import background from "../assets/images/login-bg.jpg";
 import axios from "axios";
+import Constants from "expo-constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = () => {
   const [name, setName] = React.useState("");
@@ -37,16 +39,33 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://192.168.43.169:8000/api/auth/login",
-        {
-          name,
-          password,
-        }
-      );
+      // Use dynamic IP based on environment
+      const baseUrl =
+        Constants.expoConfig?.extra?.apiUrl || "http://192.168.43.169:8000";
+
+      const response = await axios.post(`${baseUrl}/api/auth/login`, {
+        name,
+        password,
+      });
 
       if (response.data.status === "success") {
-        router.replace("/(tabs)/home");
+        // For mobile, use AsyncStorage instead of localStorage
+        try {
+          if (typeof AsyncStorage !== "undefined") {
+            // Web environment
+            AsyncStorage.setItem("token", response.data.token);
+            AsyncStorage.setItem("name", name);
+          } else {
+            // Mobile environment - you'll need to import AsyncStorage
+            // and implement storage logic here
+            // For now, we'll just continue without storage
+          }
+          router.replace("/(tabs)/home");
+        } catch (storageError) {
+          console.error("Storage error:", storageError);
+          // Continue anyway since storage isn't critical
+          router.replace("/(tabs)/home");
+        }
       }
     } catch (error) {
       if (error.response) {
@@ -55,9 +74,15 @@ const Login = () => {
         } else {
           setGeneralError(error.response.data.message || "Login failed");
         }
+      } else if (error.request) {
+        // Network error details
+        setGeneralError(
+          "Network error. Please check your connection and make sure the server is running."
+        );
       } else {
-        setGeneralError("Network error. Please try again.");
+        setGeneralError("An unexpected error occurred. Please try again.");
       }
+      console.error("Login error:", error);
     }
   };
 
