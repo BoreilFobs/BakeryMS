@@ -8,11 +8,13 @@ import {
   Animated,
   Easing,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import axios from "axios";
 import React from "react";
 import { BlurView } from "expo-blur";
 import { router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 
 const DNALoader = () => {
   const animation = new Animated.Value(0);
@@ -67,27 +69,34 @@ const DNALoader = () => {
 
 const Home = () => {
   const domain = "http://192.168.43.169:8000";
+  const navigation = useNavigation();
 
   const [offers, setOffers] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const fetchOffers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axios.get(`${domain}/api/offers`);
+      setOffers(response.data);
+    } catch (error) {
+      console.error("Error fetching offers:", error);
+      setError("Failed to load offers. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   React.useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await axios.get(`${domain}/api/offers`);
-        setOffers(response.data);
-      } catch (error) {
-        console.error("Error fetching offers:", error);
-        setError("Failed to load offers. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchOffers();
+  }, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchOffers().then(() => setRefreshing(false));
   }, []);
 
   if (loading) {
@@ -108,10 +117,7 @@ const Home = () => {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>{error}</Text>
-        <TouchableOpacity
-          style={styles.retryButton}
-          onPress={() => window.location.reload()}
-        >
+        <TouchableOpacity style={styles.retryButton} onPress={fetchOffers}>
           <Text style={styles.retryButtonText}>Retry</Text>
         </TouchableOpacity>
       </View>
@@ -119,7 +125,17 @@ const Home = () => {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#3E2723"]}
+          tintColor="#3E2723"
+        />
+      }
+    >
       <View style={styles.titleContainer}>
         <Text style={styles.appTitle}>La Perceverance</Text>
       </View>
@@ -146,10 +162,14 @@ const Home = () => {
               <Text style={styles.productName}>{product.name}</Text>
               <Text style={styles.productPrice}>{product.price}FCFA</Text>
             </View>
-
             <TouchableOpacity
               style={styles.orderButton}
-              onPress={() => router.push(`/form?id=${product.id}`)}
+              onPress={() =>
+                router.push({
+                  pathname: "/form",
+                  params: { id: product.id },
+                })
+              }
             >
               <Text style={styles.orderButtonText}>Order Now</Text>
             </TouchableOpacity>

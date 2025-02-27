@@ -38,7 +38,7 @@ Route::get('/offers', [OfferController::class, 'index']);
 Route::get('/orders', [OrderController::class, 'index']);
 Route::get('/orders/{id}/details', [OrderController::class, 'show']);
 Route::post('/orders/create', [OrderController::class, 'store']);
-Route::get('/orders/{id}/edit', [OrderController::class, 'update']);
+Route::put('/orders/{id}/edit', [OrderController::class, 'update']);
 Route::get('/orders/{id}/delete', [OrderController::class, 'delete']);
 
 // ingredient api

@@ -55,6 +55,7 @@ const Login = () => {
             // Web environment
             AsyncStorage.setItem("token", response.data.token);
             AsyncStorage.setItem("name", name);
+            AsyncStorage.setItem("id", response.data.id);
           } else {
             // Mobile environment - you'll need to import AsyncStorage
             // and implement storage logic here
@@ -66,7 +67,23 @@ const Login = () => {
           // Continue anyway since storage isn't critical
           router.replace("/(tabs)/home");
         }
-      }
+      } // After successful login
+      const storeUserData = async (userData, token) => {
+        try {
+          await AsyncStorage.setItem("token", token);
+          await AsyncStorage.setItem("id", userData.id.toString());
+          await AsyncStorage.setItem("name", userData.name);
+          console.log("Stored user data:", {
+            id: userData.id,
+            name: userData.name,
+          });
+        } catch (error) {
+          console.error("Error storing user data:", error);
+        }
+      };
+
+      // Call this after login success
+      storeUserData(response.data.user, response.data.token);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {

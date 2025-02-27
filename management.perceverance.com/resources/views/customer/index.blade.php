@@ -14,7 +14,7 @@
                 <img src="{{asset($customer->cust_pic_path)}}" alt="..." class="img-fluid" />
               </div>
               <a href="{{url('/customers/' .$customer->id. '/profile')}}" class="name"
-                ><strong class="d-block">{{$customer->cust_name}}</strong
+                ><strong class="d-block">{{$customer->name}}</strong
                 ><span class="d-block">See Actions</span></a
               >
             </div>

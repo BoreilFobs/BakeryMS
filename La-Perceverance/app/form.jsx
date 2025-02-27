@@ -11,8 +11,10 @@ import {
 } from "react-native";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useLocalSearchParams, router } from "expo-router";
+import { useRoute } from "@react-navigation/native";
+import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const DNALoader = () => {
   const animation = new Animated.Value(0);
@@ -62,13 +64,15 @@ const DNALoader = () => {
 
 const Form = () => {
   const domain = "http://192.168.43.169:8000";
-  const { id } = useLocalSearchParams();
+  const route = useRoute();
+  const { id } = route.params || {};
   const [quantity, setQuantity] = useState("");
   const [totalCost, setTotalCost] = useState(0);
   const [product, setProduct] = useState();
   const [currentUser, setCurrentUser] = useState();
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     const fetchUser = async () => {
@@ -103,6 +107,11 @@ const Form = () => {
   React.useEffect(() => {
     const fetchOffers = async () => {
       try {
+        if (!id) {
+          setErrorMessage("No product ID provided");
+          return;
+        }
+
         const response = await axios.get(`${domain}/api/offers`);
         const filteredOffer = response.data.find(
           (offer) => offer.id === parseInt(id)
@@ -127,12 +136,48 @@ const Form = () => {
     }
   }, [quantity, product]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setErrorMessage("");
+    setIsSubmitting(true);
 
     if (!quantity || parseInt(quantity) <= 0) {
       setErrorMessage("Please enter a valid quantity");
+      setIsSubmitting(false);
       return;
+    }
+
+    if (!currentUser) {
+      setErrorMessage("User not authenticated");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.post(
+        `${domain}/api/orders/create`,
+        {
+          cust_id: currentUser.id,
+          offer_id: parseInt(id),
+          quantity: parseInt(quantity),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.status === "success") {
+        router.push("/orders");
+      } else {
+        setErrorMessage("Failed to place order");
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      setErrorMessage(error.response?.data?.message || "Error placing order");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

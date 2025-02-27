@@ -5,41 +5,90 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
+  Alert,
+  Platform,
+  RefreshControl,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+interface Order {
+  id: number;
+  offer_id: number;
+  quantity: number;
+  cust_id: number;
+}
+
+interface Offer {
+  id: number;
+  name: string;
+  price: number;
+  offer_pic_path: string;
+}
 
 const Orders = () => {
+  const domain = "http://192.168.43.169:8000";
   const [quantities, setQuantities] = useState<Record<number, number>>({});
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [offers, setOffers] = useState<Offer[]>([]);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-  const products = [
-    {
-      id: 1,
-      name: "La Perceverance Coffee",
-      price: 4.99,
-      image: require("../../assets/images/logo.png"),
-    },
-    {
-      id: 2,
-      name: "Dark Roast Special",
-      price: 5.99,
-      image: require("../../assets/images/logo.png"),
-    },
-    {
-      id: 3,
-      name: "Espresso Blend",
-      price: 6.49,
-      image: require("../../assets/images/logo.png"),
-    },
-    {
-      id: 4,
-      name: "Breakfast Blend",
-      price: 4.49,
-      image: require("../../assets/images/logo.png"),
-    },
-  ];
+  const fetchData = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      if (!token) {
+        router.replace("/");
+        return;
+      }
+
+      // Fetch orders
+      const ordersResponse = await axios.get(`${domain}/api/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const storedId = await AsyncStorage.getItem("id");
+      const userId = storedId ? parseInt(storedId) : null;
+
+      if (!userId) {
+        router.replace("/");
+        return;
+      }
+
+      // Filter orders for current user
+      const userOrders = ordersResponse.data.filter(
+        (order: { cust_id: number }) => order.cust_id === userId
+      );
+      setOrders(userOrders);
+
+      // Fetch offers
+      const offersResponse = await axios.get(`${domain}/api/offers`);
+      setOffers(offersResponse.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      router.replace("/");
+    } finally {
+      setIsLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    fetchData();
+  }, []);
 
   const handleLogout = () => {
     router.replace("/");
@@ -49,21 +98,80 @@ const Orders = () => {
     router.push(`/form?id=${productId}&edit=true`);
   };
 
+  const handleDelete = async (orderId: number) => {
+    const confirmDelete =
+      Platform.OS === "web"
+        ? window.confirm("Are you sure you want to delete this order?")
+        : await new Promise((resolve) => {
+            Alert.alert(
+              "Delete Order",
+              "Are you sure you want to delete this order?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                  onPress: () => resolve(false),
+                },
+                {
+                  text: "Delete",
+                  style: "destructive",
+                  onPress: () => resolve(true),
+                },
+              ]
+            );
+          });
+
+    if (confirmDelete) {
+      try {
+        const token = await AsyncStorage.getItem("token");
+        await axios.get(`${domain}/api/orders/${orderId}/delete`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setOrders(orders.filter((order) => order.id !== orderId));
+      } catch (error) {
+        console.error("Error deleting order:", error);
+        if (Platform.OS === "web") {
+          alert("Failed to delete order");
+        } else {
+          Alert.alert("Error", "Failed to delete order");
+        }
+      }
+    }
+  };
+
   const getTotalCost = () => {
-    return products.reduce((total, product) => {
-      return (
-        total +
-        product.price * (quantities[product.id as keyof typeof quantities] || 0)
-      );
+    return orders.reduce((total, order) => {
+      const offer = offers.find((o) => o.id === order.offer_id);
+      return total + (offer ? offer.price * order.quantity : 0);
     }, 0);
   };
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#3E2723" />
+        <Text style={styles.loadingText}>Loading orders...</Text>
+      </View>
+    );
+  }
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={["#3E2723"]}
+          tintColor="#3E2723"
+        />
+      }
+    >
       <View style={styles.header}>
-        <Text style={styles.totalCost}>
-          Total: ${getTotalCost().toFixed(2)}
-        </Text>
+        <Text style={styles.totalCost}>Total: {getTotalCost()} FCFA</Text>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={24} color="#FFF3E0" />
         </TouchableOpacity>
@@ -71,51 +179,52 @@ const Orders = () => {
 
       <BlurView intensity={20} style={styles.itemCountContainer} tint="light">
         <Text style={styles.itemCount}>
-          {products.length} Item{products.length !== 1 ? "s" : ""}
+          {orders.length} Item{orders.length !== 1 ? "s" : ""}
         </Text>
       </BlurView>
 
-      {products.map((product) => (
-        <BlurView
-          key={product.id}
-          intensity={40}
-          style={styles.productCard}
-          tint="light"
-        >
-          <Image
-            source={product.image}
-            style={styles.productImage}
-            resizeMode="cover"
-          />
+      {orders.map((order) => {
+        const offer = offers.find((o) => o.id === order.offer_id);
+        return (
+          <BlurView
+            key={order.id}
+            intensity={40}
+            style={styles.productCard}
+            tint="light"
+          >
+            <Image
+              source={{ uri: domain + offer?.offer_pic_path }}
+              style={styles.productImage}
+              resizeMode="cover"
+            />
 
-          <View style={styles.productInfo}>
-            <View style={styles.textContainer}>
-              <Text style={styles.productName}>{product.name}</Text>
-              <Text style={styles.productPrice}>
-                ${product.price.toFixed(2)}
-              </Text>
-              <Text style={styles.quantity}>
-                Quantity: {quantities[product.id] || 0}
-              </Text>
-              <Text style={styles.itemTotal}>
-                Total: $
-                {((quantities[product.id] || 0) * product.price).toFixed(2)}
-              </Text>
+            <View style={styles.productInfo}>
+              <View style={styles.textContainer}>
+                <Text style={styles.productName}>{offer?.name}</Text>
+                <Text style={styles.productPrice}>{offer?.price}FCFA</Text>
+                <Text style={styles.quantity}>Quantity: {order.quantity}</Text>
+                <Text style={styles.itemTotal}>
+                  Total: {order.quantity * (offer?.price || 0)}FCFA
+                </Text>
+              </View>
+              <View style={styles.actionButtons}>
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => handleEdit(order.id)}
+                >
+                  <Ionicons name="create-outline" size={24} color="#3E2723" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => handleDelete(order.id)}
+                >
+                  <Ionicons name="trash-outline" size={24} color="#3E2723" />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.actionButtons}>
-              <TouchableOpacity
-                style={styles.actionButton}
-                onPress={() => handleEdit(product.id)}
-              >
-                <Ionicons name="create-outline" size={24} color="#3E2723" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.actionButton}>
-                <Ionicons name="trash-outline" size={24} color="#3E2723" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </BlurView>
-      ))}
+          </BlurView>
+        );
+      })}
     </ScrollView>
   );
 };
@@ -124,6 +233,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#E6D5C7",
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#E6D5C7",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#3E2723",
   },
   header: {
     flexDirection: "row",
