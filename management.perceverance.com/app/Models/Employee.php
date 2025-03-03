@@ -16,6 +16,7 @@ class Employee extends Model
         'job',
         'pay_rate',
         'experience',
-        'emp_pic_path'
+        'emp_pic_path',
+        'phone'
     ];
 }

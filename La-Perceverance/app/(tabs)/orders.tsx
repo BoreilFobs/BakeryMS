@@ -13,6 +13,7 @@ import {
 import React, { useState, useEffect } from "react";
 import { BlurView } from "expo-blur";
 import { router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -33,13 +34,14 @@ interface Offer {
 
 const Orders = () => {
   const domain = "http://192.168.43.169:8000";
+  const navigation = useNavigation();
   const [quantities, setQuantities] = useState<Record<number, number>>({});
   const [orders, setOrders] = useState<Order[]>([]);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-
+  const name = AsyncStorage.getItem("name");
   const fetchData = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
@@ -94,10 +96,6 @@ const Orders = () => {
     router.replace("/");
   };
 
-  const handleEdit = (productId: number) => {
-    router.push(`/form?id=${productId}&edit=true`);
-  };
-
   const handleDelete = async (orderId: number) => {
     const confirmDelete =
       Platform.OS === "web"
@@ -129,7 +127,6 @@ const Orders = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-
         setOrders(orders.filter((order) => order.id !== orderId));
       } catch (error) {
         console.error("Error deleting order:", error);
@@ -139,6 +136,22 @@ const Orders = () => {
           Alert.alert("Error", "Failed to delete order");
         }
       }
+    }
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const name = await AsyncStorage.getItem("name");
+      await axios.post(
+        `${domain}/api/messages`,
+        { message: `${name} deleted his order` },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the auth token if using API authentication
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.error("error sending notification:", error);
     }
   };
 
@@ -210,7 +223,12 @@ const Orders = () => {
               <View style={styles.actionButtons}>
                 <TouchableOpacity
                   style={styles.actionButton}
-                  onPress={() => handleEdit(order.id)}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/edit",
+                      params: { id: order.id, offer_id: order.offer_id },
+                    })
+                  }
                 >
                   <Ionicons name="create-outline" size={24} color="#3E2723" />
                 </TouchableOpacity>

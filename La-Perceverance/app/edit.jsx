@@ -65,7 +65,7 @@ const DNALoader = () => {
 const Form = () => {
   const domain = "http://192.168.43.169:8000";
   const route = useRoute();
-  const { id } = route.params || {};
+  const { id, offer_id } = route.params || {};
   const [quantity, setQuantity] = useState("");
   const [totalCost, setTotalCost] = useState(0);
   const [product, setProduct] = useState();
@@ -114,7 +114,7 @@ const Form = () => {
 
         const response = await axios.get(`${domain}/api/offers`);
         const filteredOffer = response.data.find(
-          (offer) => offer.id === parseInt(id)
+          (offer) => offer.id === parseInt(offer_id)
         );
         if (filteredOffer) {
           setProduct(filteredOffer);
@@ -155,11 +155,11 @@ const Form = () => {
     try {
       const token = await AsyncStorage.getItem("token");
       const name = await AsyncStorage.getItem("name");
-      const response = await axios.post(
-        `${domain}/api/orders/create`,
+      const response = await axios.put(
+        `${domain}/api/orders/${parseInt(id)}/edit`,
         {
           cust_id: currentUser.id,
-          offer_id: parseInt(id),
+          offer_id: parseInt(offer_id),
           quantity: parseInt(quantity),
         },
         {
@@ -169,11 +169,29 @@ const Form = () => {
         }
       );
 
+      axios
+        .post(
+          "/api/messages",
+          { message: `${name} updated his order` },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include the auth token if using API authentication
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Message created and notification sent:", response.data);
+        })
+        .catch((error) => {
+          console.error("Error creating message:", error.response.data);
+        });
+
       if (response.data.status === "success") {
         try {
           await axios.post(
             `${domain}/api/messages`,
-            { message: `${name} Placed a new order` },
+            { message: `${name} updated his order` },
             {
               headers: {
                 Authorization: `Bearer ${token}`, // Include the auth token if using API authentication
@@ -186,11 +204,11 @@ const Form = () => {
         }
         router.push("/orders");
       } else {
-        setErrorMessage("Failed to place order");
+        setErrorMessage("Failed to update order");
       }
     } catch (error) {
-      console.error("Error placing order:", error);
-      setErrorMessage(error.response?.data?.message || "Error placing order");
+      console.error("Error updating order:", error);
+      setErrorMessage(error.response?.data?.message || "Error updating order");
     } finally {
       setIsSubmitting(false);
     }
@@ -248,7 +266,7 @@ const Form = () => {
             {isSubmitting ? (
               <ActivityIndicator color="#FFF3E0" />
             ) : (
-              <Text style={styles.submitButtonText}>Place Order</Text>
+              <Text style={styles.submitButtonText}>Edit Order</Text>
             )}
           </TouchableOpacity>
         </View>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date("emp_dob")->nullable();
             $table->string("emp_pob")->nullable();
             $table->string("residence");
+            $table->string("phone");
             $table->string("job");
             $table->double("pay_rate");
             $table->integer("experience");

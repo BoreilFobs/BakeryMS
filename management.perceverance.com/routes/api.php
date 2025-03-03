@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\IngredientsController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
@@ -47,3 +48,6 @@ Route::get('/ingredients', [IngredientsController::class, 'index']);
 // Auth routes
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
+
+// message routes
+Route::post('/messages', [MessageController::class, 'store']);

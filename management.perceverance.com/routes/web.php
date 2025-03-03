@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\CompositionController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FormulaController;
 use App\Http\Controllers\IngredientsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\RollCallController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +37,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/employees/{id}/edit', [EmployeeController::class, 'formEdit']);
     Route::put('/employees/{id}/editData', [EmployeeController::class, 'update']);
     Route::get('/employees/{id}/delete', [EmployeeController::class, 'delete']);
+
+
+    //  routing for roll calls
+    Route::get("employees/rollCall", [RollCallController::class, 'index']);
+
 
     // routing for customers
 
@@ -71,10 +78,11 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/ingredients/{id}/editData', [IngredientsController::class, 'update']);
     Route::get('/ingredients/{id}/delete', [IngredientsController::class, 'delete']);
 
-
+    // route for pusher
+    Route::post('/save-device-id', [DeviceController::class, 'saveDeviceId']);
 });
 
-Route::fallback(function(){
+Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
 

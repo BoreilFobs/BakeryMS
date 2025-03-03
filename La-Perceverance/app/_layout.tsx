@@ -37,7 +37,14 @@ export default function RootLayout() {
       <Stack.Screen name="+not-found" />
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="register" options={{ headerShown: false }} />
-      <Stack.Screen name="form" options={{ headerShown: true , title: "Order now"}} />
+      <Stack.Screen
+        name="form"
+        options={{ headerShown: true, title: "Order now" }}
+      />
+      <Stack.Screen
+        name="edit"
+        options={{ headerShown: true, title: "Edit your order" }}
+      />
       <StatusBar style="auto" />
     </Stack>
   );

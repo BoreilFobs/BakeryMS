@@ -10,25 +10,30 @@ use Illuminate\Support\Facades\Storage;
 class EmployeeController extends Controller
 {
     //
-    public function index(){
+    public function index()
+    {
         $employees = Employee::all();
         return view('employee.index', compact('employees'));
     }
-    public function show($id){
+    public function show($id)
+    {
         $employee = Employee::findOrFail($id);
         return view('employee.show', compact('employee'));
     }
-    public function form(){
-       return view('employee.form');
+    public function form()
+    {
+        return view('employee.form');
     }
-    public function formEdit($id) {
+    public function formEdit($id)
+    {
         $employee = Employee::findOrFail($id);
         return view('employee.form', compact('employee'));
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
-         $request->validate([
+        $request->validate([
             'emp_name' => 'required',
             'residence' => 'required',
             'job' => 'required',
@@ -37,18 +42,19 @@ class EmployeeController extends Controller
             'emp_pob' => 'nullable',
             'emp_pic' => 'nullable|max:2048',
             'experience' => 'required',
+            'phone' => 'required|max:9|min:9',
 
         ]);
 
         // handle image upload
 
-         if($request->file('emp_pic')){
+        if ($request->file('emp_pic')) {
             $img_path = $request->file('emp_pic')->store('emp_profile_pics', 'public');
             $img_url = Storage::url($img_path);
         }
 
 
-        if($request->file('emp_pic')){
+        if ($request->file('emp_pic')) {
             Employee::create([
                 'emp_name' => $request->emp_name,
                 'emp_dob' => $request->emp_dob,
@@ -57,27 +63,30 @@ class EmployeeController extends Controller
                 'job' => $request->job,
                 'pay_rate' => $request->pay_rate,
                 'experience' => $request->experience,
-                'emp_pic_path' => $img_url
+                'emp_pic_path' => $img_url,
+                'phone' => $request->phone
             ]);
-        }else{
-             Employee::create([
+        } else {
+            Employee::create([
                 'emp_name' => $request->emp_name,
                 'emp_dob' => $request->emp_dob,
                 'emp_pob' => $request->emp_pob,
                 'residence' => $request->residence,
                 'job' => $request->job,
                 'pay_rate' => $request->pay_rate,
-                'experience' => $request->experience
+                'experience' => $request->experience,
+                'phone' => $request->phone
             ]);
         }
         return redirect('/employees')->with('success', 'Employee created successfully');
     }
 
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
 
 
-         $request->validate([
+        $request->validate([
             'emp_name' => 'required',
             'residence' => 'required',
             'job' => 'required',
@@ -86,20 +95,20 @@ class EmployeeController extends Controller
             'emp_pob' => 'nullable',
             'emp_pic' => 'nullable|max:2048',
             'experience' => 'required',
-
+            'phone' => 'required|max:9|min:9',
         ]);
 
         // handle image upload
         $employee = Employee::findOrFail($id);
-        if($request->file('emp_pic')){
-            if ($employee->emp_pic_path){
+        if ($request->file('emp_pic')) {
+            if ($employee->emp_pic_path) {
                 Storage::delete($employee->emp_pic_path);
             }
             $img_path = $request->file('emp_pic')->store('emp_profile_pics', 'public');
             $img_url = Storage::url($img_path);
         }
 
-        if($request->file('emp_pic')){
+        if ($request->file('emp_pic')) {
             Employee::findOrFail($id)->update([
                 'emp_name' => $request->emp_name,
                 'emp_dob' => $request->emp_dob,
@@ -108,10 +117,11 @@ class EmployeeController extends Controller
                 'job' => $request->job,
                 'pay_rate' => $request->pay_rate,
                 'experience' => $request->experience,
-                'emp_pic_path' => $img_url
-        ]);
-        }else{
-             Employee::findOrFail($id)->update([
+                'emp_pic_path' => $img_url,
+                'phone' => $request->phone
+            ]);
+        } else {
+            Employee::findOrFail($id)->update([
                 'emp_name' => $request->emp_name,
                 'emp_dob' => $request->emp_dob,
                 'emp_pob' => $request->emp_pob,
@@ -119,19 +129,22 @@ class EmployeeController extends Controller
                 'job' => $request->job,
                 'pay_rate' => $request->pay_rate,
                 'experience' => $request->experience,
-        ]);
+                'phone' => $request->phone
+            ]);
         }
         return redirect('/employees')->with('success', 'Employee updated successfully');
     }
-    public function delete($id){
-         $employee = Employee::findOrFail($id);
-            if ($employee->emp_pic_path){
-                Storage::delete($employee->emp_pic_path);
-            }
+    public function delete($id)
+    {
+        $employee = Employee::findOrFail($id);
+        if ($employee->emp_pic_path) {
+            Storage::delete($employee->emp_pic_path);
+        }
         $employee->delete();
         return redirect('/employees')->with('success', 'Employee deleted successfully');
     }
-     public function logout(){
+    public function logout()
+    {
         Auth::logout();
         return redirect('/login');
     }

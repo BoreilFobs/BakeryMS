@@ -27,4 +27,8 @@ class User extends Authenticatable
         'name',
         'password',
     ];
+    public function deviceIds()
+    {
+        return $this->hasMany(Device::class);
+    }
 }
